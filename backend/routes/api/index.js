@@ -24,17 +24,12 @@ router.get('/set-token-cookie', async (_req, res) => {
 
 router.use(restoreUser);
 
-router.get(
-  '/restore-user',
-  (req, res) => {
+router.get('/restore-user',(req, res) => {
     return res.json(req.user);
   }
 );
 
-router.get(
-  '/require-auth',
-  requireAuth,
-  (req, res) => {
+router.get('/require-auth',requireAuth,(req, res) => {
     return res.json(req.user);
   }
 );
