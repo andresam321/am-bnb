@@ -13,7 +13,7 @@ const validateLogin = [
     check('credential')
     .exists({ checkFalsy: true })
     .notEmpty()
-    .withMessage('Please provide a valid email, username, firstName, lastName.'),
+    .withMessage('Please provide a valid email, username'),
     check('password')
     .exists({ checkFalsy: true })
     .withMessage('Please provide a password.'),
@@ -27,7 +27,7 @@ router.post('/',validateLogin,async (req, res, next) => {
         where: {
         [Op.or]: {
             firstName: user.firstName,
-            username: user.username,
+            username: user.userame,
             email: user.email,
             lastName: user.lastName
         }
