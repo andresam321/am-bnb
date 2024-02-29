@@ -6,30 +6,27 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User } = require('../../db/models');
+// const user = require('../../db/models/user');
 
 const validateSignup = [
     check('firstName')
         .exists({ checkFalsy: true })
+        .isLength({ min: 2 })
         .not()
-        .isEmail()
-        .withMessage('Please provide a valid firstName.'),
+        .withMessage("First Name is required"),
     check('lastName')
         .exists({ checkFalsy: true })
+        .isLength({ min: 2 })
         .not()
-        .isEmail()
-        .withMessage('Please provide a valid lastName.'),
+        .withMessage("Last Name is required"),
     check('email')
         .exists({ checkFalsy: true })
         .isEmail()
-        .withMessage('Please provide a valid email.'),
+        .withMessage('Invalid Email.'),
     check('username')
         .exists({ checkFalsy: true })
         .isLength({ min: 4 })
-        .withMessage('Please provide a username with at least 4 characters.'),
-    check('username')
-        .not()
-        .isEmail()
-        .withMessage('Username cannot be an email.'),
+        .withMessage('Username is required.'),
     check('password')
         .exists({ checkFalsy: true })
         .isLength({ min: 6 })
@@ -37,9 +34,58 @@ const validateSignup = [
     handleValidationErrors
 ];
 
-router.post('/',validateSignup,async (req, res) => {
+
+const validateEmail = async (req,res,next) =>{
+
+    const{email} = req.body
+
+    const existingEmail = await User.findOne(
+        { 
+        where:{email: email}, 
+        },
+    );
+    if (existingEmail) {
+        console.log("line47",existingEmail)
+        res.status(400).json({
+            message: "User already exists",
+            errors: {
+            username: "User with that email already exists",
+            },
+        });
+    return;
+    }
+    next()
+}
+const validateUsername = async (req,res,next) =>{
+
+    const{username} = req.body
+
+    const existingUsername = await User.findOne({ 
+        where:{username: username} 
+    });
+
+    if (existingUsername) {
+        res.status(400).json({
+            message: "User already exists",
+            errors: {
+            username: "User with that username already exists",
+            },
+        });
+    return;
+    }
+    
+}
+
+
+
+router.post('/',validateSignup,validateEmail,validateUsername,async (req, res) => {
+
+
+try {
+
     const { email, password, username,firstName,lastName } = req.body;
     const hashedPassword = bcrypt.hashSync(password);
+
     const user = await User.create({ email, username, hashedPassword,firstName,lastName });
 
     const safeUser = {
@@ -49,13 +95,17 @@ router.post('/',validateSignup,async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName
 
-    };
+    };    
 
     await setTokenCookie(res, safeUser);
 
     return res.json({
+
         user: safeUser
     });
+
+    } catch (error) {
+    }
 }
 );
 
