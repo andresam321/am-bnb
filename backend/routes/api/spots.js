@@ -274,26 +274,36 @@ router.post("/:spotId/images",requireAuth, async (req, res) => {
         const { url, preview } = req.body;
 
         
+        const spot = await Spot.findByPk(spotId);
+
+        // Check if the spot exists
+        if (!spot) {
+            return res.status(404).json({
+                message: "Spot not found",
+            });
+        }
+
+        // Check if the logged-in user is the owner of the spot
+        if (spot.ownerId !== req.user.id) {
+            return res.status(403).json({
+                error: "You are not authorized to add images to this spot",
+            });
+        }
+
+        // Create a new image for the spot
         const addedImage = await SpotImage.create({
-            spotId, // Assuming a unique ID is generated for the image
+            spotId,
             url,
             preview
         });
 
-        const newImage = await SpotImage.findOne({
-            attributes:["id","url","preview"],
-            where:{
-                id:addedImage.id
-            }
-        })
+        // Respond with the newly added image, excluding createdAt and updatedAt
+        res.status(200).json({
+            id: addedImage.id,
+            url: addedImage.url,
+            preview: addedImage.preview
+        });
 
-        if (!newImage) {
-            return res.status(404).json({
-            message: "Spot couldn't be found",
-            });
-        }
-
-        res.status(200).json(newImage);
     } catch (error) {
         // If an error occurs during the image addition process, respond with a 404 status code
         res.status(404).json({ message: "Spot couldn't be found" });
@@ -331,7 +341,7 @@ router.put('/:spotId', requireAuth, validateSpot, handleValidationErrors, async 
 });
 
 
-router.delete("/:spotId", requireAuth, async(req,res) =>{
+router.delete("/:spotId", requireAuth,handleValidationErrors, async(req,res) =>{
     const spotId = req.params.spotId
 
     let deleteSpot = await Spot.findByPk(spotId)
