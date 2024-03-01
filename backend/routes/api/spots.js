@@ -102,7 +102,6 @@ const validateQuery = [
 
 router.get('/', validateQuery,handleValidationErrors, async (req, res) => {
     try {
-        // Fetch all spots from the database
 
         let {page,size,minLat,maxLat,minLng,maxLng,minPrice,maxPrice} = req.query
 
@@ -116,6 +115,8 @@ router.get('/', validateQuery,handleValidationErrors, async (req, res) => {
             limit: size,
             offset: size * (page - 1)
         }
+
+
         let searchObj = {
             where:{}
         }
@@ -196,7 +197,8 @@ router.get('/', validateQuery,handleValidationErrors, async (req, res) => {
         }
 
         // Send the list of transformed spots as a JSON response
-        res.status(200).json({ Spots: listOfSpots });
+        res.status(200).json({ Spots: listOfSpots, page:+page,
+            size:+size  });
     } catch (error) {
         // Handle any errors that occur during the process
         console.error("Error fetching spots:", error);
@@ -259,8 +261,12 @@ router.get('/current', async (req, res) => {
         }
 
         // Send the list of transformed spots as a JSON response
-        res.status(200).json({ Spots: listOfSpots });
-    } catch (error) {
+        res.status(200).json(
+            { 
+            Spots: listOfSpots,
+            });
+    
+        } catch (error) {
         // Handle any errors that occur during the process
         console.error("Error fetching spots:", error);
         res.status(500).json({ error: "Internal server error" });
