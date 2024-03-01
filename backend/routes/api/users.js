@@ -73,6 +73,7 @@ const validateUsername = async (req,res,next) =>{
         });
     return;
     }
+    next()
     
 }
 
