@@ -1,5 +1,5 @@
 const express = require('express')
-const { check } = require('express-validator');
+const { check, query} = require('express-validator');
 const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
 const { requireAuth } = require("../../utils/auth")
@@ -62,13 +62,93 @@ const validateReview = [
         .withMessage('Review text is required'),
 ];
 
+const validateQuery = [
+    query('page')
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage("Page must be greater than or equal to 1"),
+    query('size')
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage("Page must be greater than or equal to 1"),
+    query('maxLat')
+        .optional()
+        .isFloat({ min: -90, max: 90 })
+        .withMessage('Maximum latitude is invalid'),
+    query('minLat')
+        .optional()
+        .isFloat({ min: -90, max: 90 })
+        .withMessage('Minimum latitude is invalid'),
+    query('minLng')
+        .optional()
+        .isFloat({ min: -180, max: 180 })
+        .withMessage('Minimum longitude is invalid'),
+    query('maxLng')
+        .optional()
+        .isFloat({ min: -180, max: 180 })
+        .withMessage('Maximum longitude is invalid'),
+    query('maxPrice')
+        .optional()
+        .isFloat({ min: 0 })
+        .withMessage('Maximum price must be greater than or equal to 0'),
+    query('minPrice')
+        .optional()
+        .isFloat({ min: 0 })
+        .withMessage('Minimum price must be greater than or equal to 0'),
+];
 
 
 
-router.get('/', async (req, res) => {
+
+router.get('/', validateQuery,handleValidationErrors, async (req, res) => {
     try {
         // Fetch all spots from the database
-        const spots = await Spot.findAll({});
+
+        let {page,size,minLat,maxLat,minLng,maxLng,minPrice,maxPrice} = req.query
+
+        page = parseInt(page) || 1
+        size = parseInt(size) || 20
+
+        if (page > 10) page = 10
+        if (size > 20) size = 20
+
+        let pagObj = {
+            limit: size,
+            offset: size * (page - 1)
+        }
+        let searchObj = {
+            where:{}
+        }
+
+    if (minLat && maxLat) {
+        searchObj.where.lat = { [Op.between]: [minLat, maxLat] }
+    } else if (minLat) {
+        searchObj.where.lat = { [Op.gte]: minLat }
+    } else if (maxLat) {
+        queryObj.where.lat = { [Op.lte]: maxLat }
+    }
+
+    if (minLng && maxLng) {
+        searchObj.where.lng = { [Op.between]: [minLng, maxLng] }
+    } else if (minLng) {
+        searchObj.where.lng = { [Op.gte]: minLng }
+    } else if (maxLng) {
+        searchObj.where.lng = { [Op.lte]: maxLng }
+    }
+
+    if (minPrice && maxPrice) {
+        searchObj.where.price = { [Op.between]: [minPrice, maxPrice] }
+    } else if (minPrice) {
+        searchObj.where.price = { [Op.gte]: minPrice }
+    } else if (maxPrice) {
+        searchObj.where.price = { [Op.lte]: maxPrice }
+    }
+
+
+        const spots = await Spot.findAll({
+            ...pagObj,
+            ...searchObj
+        });
 
         const listOfSpots = [];
 
@@ -300,7 +380,7 @@ router.post("/:spotId/images",requireAuth, async (req, res) => {
         // Check if the logged-in user is the owner of the spot
         if (spot.ownerId !== req.user.id) {
             return res.status(403).json({
-                error: "You are not authorized to add images to this spot",
+                error: "Forbidden",
             });
         }
 
@@ -336,7 +416,7 @@ router.put('/:spotId', requireAuth, validateSpot, handleValidationErrors, async 
 
     // Check if the user is authorized to update the spot
     if (spot.ownerId !== req.user.id) {
-        return res.status(403).json({ error: "You are not authorized to update this spot" });
+        return res.status(403).json({ error: "Forbidden" });
     }
 
     // Update the spot
@@ -368,7 +448,7 @@ router.delete("/:spotId", requireAuth,handleValidationErrors, async(req,res) =>{
 
     if (deleteSpot.ownerId !== req.user.id) {
         return res.status(403).json({
-            message: "You are not authorized to delete this spot",
+            message: "Forbidden",
         });
     }
 
