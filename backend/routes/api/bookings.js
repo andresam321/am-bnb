@@ -130,8 +130,7 @@ router.put('/:bookingId', validateDates, requireAuth,handleValidationErrors, asy
         // Return the updated booking
         return res.json(editBooking);
     } catch (error) {
-        console.error("Error updating booking:", error);
-        return res.status(500).json({ error: "Internal server error" });
+        
     }
 });
 
@@ -172,8 +171,7 @@ router.delete("/:reviewId", requireAuth, async (req, res) => {
             message: "Successfully Deleted"
         });
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "Internal server error" });
+        
     }
 });
 

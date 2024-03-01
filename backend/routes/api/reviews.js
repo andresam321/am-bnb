@@ -158,7 +158,7 @@ router.put("/:reviewId", requireAuth, async (req, res) => {
         await findReview.update({ review, stars });
         res.status(200).json(findReview);
     } catch (error) {
-        return res.status(500).json({ error: "Internal Server Error" });
+        
     }
 });
 
