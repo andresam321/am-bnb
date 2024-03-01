@@ -9,7 +9,7 @@ const spotsRouter = require('./spots.js')
 const reviewsRouter = require('./reviews.js')
 const bookingsRouter = require("./bookings")
 const spotImagesRouter = require("./spot-images")
-const reviewImagesRouter = require("./review-image")
+const reviewImagesRouter = require("./review-images")
 
 router.post('/test', function(req, res) {
     res.json({ requestBody: req.body });
