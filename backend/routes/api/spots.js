@@ -200,9 +200,7 @@ router.get('/', validateQuery,handleValidationErrors, async (req, res) => {
         res.status(200).json({ Spots: listOfSpots, page:+page,
             size:+size  });
     } catch (error) {
-        // Handle any errors that occur during the process
-        console.error("Error fetching spots:", error);
-        res.status(500).json({ error: "Internal server error" });
+        
     }
 });
 
@@ -267,9 +265,7 @@ router.get('/current', async (req, res) => {
             });
     
         } catch (error) {
-        // Handle any errors that occur during the process
-        console.error("Error fetching spots:", error);
-        res.status(500).json({ error: "Internal server error" });
+        
     }
 });
 router.get('/:spotId', async (req, res) => {
@@ -519,9 +515,8 @@ router.post('/:spotId/reviews', requireAuth, validateReview,handleValidationErro
 
         return res.status(201).json(newReview);
     } catch (error) {
-        // Handle any unexpected errors
-        console.error("Error creating review:", error);
-        return res.status(500).json({ message: "Internal server error" });
+        
+        
     }
 });
 
@@ -567,8 +562,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
         return res.status(200).json({ Bookings: bookings });
     } catch (error) {
-        console.error("Error fetching bookings:", error);
-        return res.status(500).json({ message: "Internal server error" });
+        
     }
 });
 
@@ -630,8 +624,8 @@ router.post("/:spotId/bookings", requireAuth, async (req, res) => {
 
         return res.status(200).json(newBooking);
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "Internal server error" });
+        // console.error(error);
+        
     }
 });
 
