@@ -20,17 +20,17 @@ module.exports = {
     await SpotImage.bulkCreate([
     { 
       spotId: 1,
-      url: 'https://example.com/image1.jpg',
+      url: 'https://example.com/spotimage1.jpg',
       preview: true
     },
     { 
       spotId: 2,
-      url: 'https://example.com/image2.jpg',
+      url: 'https://example.com/spotimage2.jpg',
       preview: false
     },
     { 
       spotId: 3,
-      url: 'https://example.com/image3.jpg',
+      url: 'https://example.com/spotimage3.jpg',
       preview: false
     },
     ])
@@ -44,7 +44,15 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
       options.tableName = 'SpotImages';
+      const Op = Sequelize.Op;
       return queryInterface.bulkDelete(options, {
+        url: {
+          [Op.in]: [
+            'https://example.com/spotimage1.jpg',
+            'https://example.com/spotimage2.jpg',
+            'https://example.com/spotimage3.jpg',
+          ]
+        },
     }, {});
   }
 };
