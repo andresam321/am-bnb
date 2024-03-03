@@ -105,7 +105,7 @@ router.post("/:reviewId/images",requireAuth, async (req, res) => {
     // Check if the logged-in user is the owner of the spot
     if (findReview.userId !== req.user.id) {
         return res.status(403).json({
-            error: "forbidden",
+            message: "forbidden",
         });
     }
     const maxImages = 10; 
@@ -137,7 +137,7 @@ router.put("/:reviewId", requireAuth, async (req, res) => {
         errors.review = "Review text is required";
     }
 
-    if (!Number.isInteger(stars) || stars <= 1 || stars >= 6) {
+    if (!Number.isInteger(stars) || stars < 1 || stars > 5) {
         errors.stars = "Stars must be an integer from 1 to 5";
     }
 
@@ -150,7 +150,7 @@ router.put("/:reviewId", requireAuth, async (req, res) => {
     }
 
     if (findReview.userId !== req.user.id) {
-        return res.status(403).json({ error: "Forbidden" });
+        return res.status(403).json({ message: "Forbidden" });
     }
 
     try {
