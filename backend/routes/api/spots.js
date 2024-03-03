@@ -63,54 +63,53 @@ const validateReview = [
 ];
 
 const validateQuery = [
-    query('page')
+    check("page")
         .optional()
         .isInt({ min: 1 })
         .withMessage("Page must be greater than or equal to 1"),
-    query('size')
+    check("size")
         .optional()
-        .isInt({ min: 1 })
-        .withMessage("Page must be greater than or equal to 1"),
-    query('maxLat')
-        .optional()
-        .isFloat({ min: -90, max: 90 })
-        .withMessage('Maximum latitude is invalid'),
-    query('minLat')
+        .isInt({ min: 1, max: 20 }) // Add max validation
+        .withMessage("Size must be greater than or equal to 1, and less than or equal to 20"), // Add custom error message
+    check("minLat")
         .optional()
         .isFloat({ min: -90, max: 90 })
-        .withMessage('Minimum latitude is invalid'),
-    query('minLng')
+        .withMessage("Minimum latitude is invalid"),
+    check("maxLat")
+        .optional()
+        .isFloat({ min: -90, max: 90 })
+        .withMessage("Maximum latitude is invalid"),
+    check("minLng")
         .optional()
         .isFloat({ min: -180, max: 180 })
-        .withMessage('Minimum longitude is invalid'),
-    query('maxLng')
+        .withMessage("Maximum longitude is invalid"),
+    check("maxLng")
         .optional()
         .isFloat({ min: -180, max: 180 })
-        .withMessage('Maximum longitude is invalid'),
-    query('maxPrice')
+        .withMessage("Minimum longitude is invalid"),
+    check("minPrice")
         .optional()
         .isFloat({ min: 0 })
-        .withMessage('Maximum price must be greater than or equal to 0'),
-    query('minPrice')
+        .withMessage("Minimum price must be greater than or equal to 0"),
+    check("maxPrice")
         .optional()
         .isFloat({ min: 0 })
-        .withMessage('Minimum price must be greater than or equal to 0'),
+        .withMessage("Maximum price must be greater than or equal to 0"),
+    handleValidationErrors,
 ];
 
 
 
 
-router.get('/', validateQuery,handleValidationErrors, async (req, res) => {
+router.get('/', validateQuery, async (req, res) => {
     try {
 
         let {page,size,minLat,maxLat,minLng,maxLng,minPrice,maxPrice} = req.query
 
-        page = Math.min(10, parseInt(page)) || 1;
-        size = Math.min(20, parseInt(size)) || 20;
+        if (!page || isNaN(parseInt(page)) || page > 10) page = 1;
+        if (!size || isNaN(parseInt(size)) || size > 20) size = 20;
 
-        if (page > 10) page = 10
-        if (size > 20) size = 20
-
+        
         let pagObj = {
             limit: size,
             offset: size * (page - 1)
