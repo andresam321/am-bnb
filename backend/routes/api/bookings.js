@@ -69,8 +69,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
         return res.json({ 'Bookings': formattedBookings });
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "Internal server error" });
+        
     }
 });
 
@@ -128,7 +127,7 @@ router.put('/:bookingId', validateDates, requireAuth,handleValidationErrors, asy
         await editBooking.save();
 
         // Return the updated booking
-        return res.json(editBooking);
+        return res.status(200).json(editBooking);
     } catch (error) {
         
     }

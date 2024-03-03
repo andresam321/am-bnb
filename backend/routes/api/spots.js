@@ -200,14 +200,11 @@ router.get('/', validateQuery,handleValidationErrors, async (req, res) => {
         res.status(200).json({ Spots: listOfSpots, page:+page,
             size:+size  });
     } catch (error) {
-        // Handle any errors that occur during the process
-        console.error("Error fetching spots:", error);
-        res.status(500).json({ error: "Internal server error" });
     }
 });
 
 
-router.get('/current', async (req, res) => {
+router.get('/current',requireAuth, async (req, res) => {
     try {
         // Fetch all spots from the database
         const spots = await Spot.findAll({
@@ -267,11 +264,9 @@ router.get('/current', async (req, res) => {
             });
     
         } catch (error) {
-        // Handle any errors that occur during the process
-        console.error("Error fetching spots:", error);
-        res.status(500).json({ error: "Internal server error" });
     }
 });
+
 router.get('/:spotId', async (req, res) => {
     const { spotId } = req.params;
     const spot = await Spot.findOne({ where: { id: spotId } });
@@ -378,7 +373,7 @@ router.post("/:spotId/images",requireAuth, async (req, res) => {
 
     } catch (error) {
         // If an error occurs during the image addition process, respond with a 404 status code
-        res.status(404).json({ message: "Spot couldn't be found" });
+        // res.status(404).json({ message: "Spot couldn't be found" });
     }
 });
 
@@ -413,7 +408,7 @@ router.put('/:spotId', requireAuth, validateSpot, handleValidationErrors, async 
 });
 
 
-router.delete("/:spotId", requireAuth,handleValidationErrors, async(req,res) =>{
+router.delete("/:spotId", requireAuth, async(req,res) =>{
     const spotId = req.params.spotId
 
     let deleteSpot = await Spot.findByPk(spotId)
@@ -456,7 +451,7 @@ router.get('/:spotId/reviews', async (req, res) => {
     })
 
 
-    return res.json({ Reviews: allreviews })
+    return res.status(200).json({ Reviews: allreviews })
 });
 
 router.post('/:spotId/reviews', requireAuth, validateReview,handleValidationErrors, async(req, res) => {
@@ -491,9 +486,6 @@ router.post('/:spotId/reviews', requireAuth, validateReview,handleValidationErro
 
         return res.status(201).json(newReview);
     } catch (error) {
-        // Handle any unexpected errors
-        console.error("Error creating review:", error);
-        return res.status(500).json({ message: "Internal server error" });
     }
 });
 
@@ -520,7 +512,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
                 }
             });
 
-            // Rearrange the bookings array to include the User information at the top
+            
             bookings = bookings.map(booking => ({
                 User: {
                     id: booking.User.id,
@@ -539,8 +531,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
         return res.status(200).json({ Bookings: bookings });
     } catch (error) {
-        console.error("Error fetching bookings:", error);
-        return res.status(500).json({ message: "Internal server error" });
+
     }
 });
 
@@ -602,8 +593,6 @@ router.post("/:spotId/bookings", requireAuth, async (req, res) => {
 
         return res.status(200).json(newBooking);
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "Internal server error" });
     }
 });
 

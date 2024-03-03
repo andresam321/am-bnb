@@ -84,8 +84,7 @@ router.get("/current", requireAuth, async (req, res) => {
 
         res.status(200).json({ Reviews: formattedReviews });
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "Internal server error" });
+        
     }
 });
 
@@ -106,7 +105,7 @@ router.post("/:reviewId/images",requireAuth, async (req, res) => {
     // Check if the logged-in user is the owner of the spot
     if (findReview.userId !== req.user.id) {
         return res.status(403).json({
-            error: "You are not authorized to add images to this review",
+            error: "forbidden",
         });
     }
     const maxImages = 10; 
@@ -151,7 +150,7 @@ router.put("/:reviewId", requireAuth, async (req, res) => {
     }
 
     if (findReview.userId !== req.user.id) {
-        return res.status(403).json({ error: "You are not authorized to update this spot" });
+        return res.status(403).json({ error: "Forbidden" });
     }
 
     try {
