@@ -20,7 +20,7 @@ const validateLogin = [
     handleValidationErrors
 ];
 
-router.post('/',validateLogin,async (req, res, next) => {
+router.post('/',validateLogin,handleValidationErrors,async (req, res, next) => {
     const { credential, password } = req.body;
 
     const user = await User.unscoped().findOne({
@@ -57,7 +57,7 @@ router.post('/',validateLogin,async (req, res, next) => {
 
     await setTokenCookie(res, safeUser);
 
-    return res.json({
+    return res.status(200).json({
         user: safeUser
     });
     }
@@ -80,10 +80,10 @@ router.get('/',(req, res) => {
         email: user.email,
         username: user.username,
         };
-        return res.json({
+        return res.status(200).json({
         user: safeUser
         });
-    } else return res.json({ user: null });
+    } else return res.status(200).json({ user: null });
     }
 );
 

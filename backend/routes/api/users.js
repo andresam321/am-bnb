@@ -46,7 +46,7 @@ const validateEmail = async (req,res,next) =>{
     );
     if (existingEmail) {
         console.log("line47",existingEmail)
-        res.status(400).json({
+        res.json({
             message: "User already exists",
             errors: {
             username: "User with that email already exists",
@@ -65,7 +65,7 @@ const validateUsername = async (req,res,next) =>{
     });
 
     if (existingUsername) {
-        res.status(400).json({
+        res.json({
             message: "User already exists",
             errors: {
             username: "User with that username already exists",
@@ -79,7 +79,7 @@ const validateUsername = async (req,res,next) =>{
 
 
 
-router.post('/',validateSignup,validateEmail,validateUsername,async (req, res) => {
+router.post('/',validateSignup,validateEmail,validateUsername,handleValidationErrors,async (req, res) => {
 
 
 try {
@@ -100,7 +100,7 @@ try {
 
     await setTokenCookie(res, safeUser);
 
-    return res.json({
+    return res.status(200).json({
 
         user: safeUser
     });
