@@ -100,7 +100,7 @@ try {
 
     await setTokenCookie(res, safeUser);
 
-    return res.status(200).json({
+    return res.json({
 
         user: safeUser
     });
