@@ -1,6 +1,5 @@
 const express = require('express')
 const { check, query} = require('express-validator');
-const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
 const { requireAuth } = require("../../utils/auth")
 const {Spot, Review, SpotImage, User,ReviewImage,Booking} = require('../../db/models')
@@ -309,8 +308,8 @@ router.get('/:spotId', async (req, res) => {
         name: spot.name,
         description: spot.description,
         price: spot.price,
-        createdAt: spot.createdAt,
-        updatedAt: spot.updatedAt,
+        createdAt: new Date(spot.createdAt).toLocaleString(),
+        updatedAt: new Date(spot.createdAt).toLocaleString(),
         numReviews: reviews.length,
         avgStarRating: avgStarRating,
         SpotImages: spotImgs,
