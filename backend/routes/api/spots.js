@@ -663,8 +663,6 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
         };
     };
 
-
-
     const newBooking = await Booking.create({
         spotId,
         userId,
