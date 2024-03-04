@@ -1,6 +1,5 @@
 const express = require('express')
 const { check } = require('express-validator');
-const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
 const { requireAuth } = require("../../utils/auth")
 const {Spot, Review, SpotImage, User,ReviewImage,Booking} = require('../../db/models')
@@ -34,18 +33,8 @@ router.get("/current", requireAuth, async (req, res) => {
     },
     include: {
         model: Spot,
-        attributes: [
-        "id",
-        "ownerId",
-        "address",
-        "city",
-        "state",
-        "country",
-        "lat",
-        "lng",
-        "name",
-        "price",
-        ],
+        attributes: ["id","ownerId","address","city","state","country",
+        "lat","lng","name","price"],
         include: [
         {
             model: SpotImage,

@@ -1,6 +1,4 @@
 const express = require('express')
-const { check } = require('express-validator');
-const bcrypt = require('bcryptjs');
 const { requireAuth } = require("../../utils/auth")
 const {Spot, Review, SpotImage, User,ReviewImage} = require('../../db/models')
 const {handleValidationErrors} =require("../../utils/validation")
@@ -22,18 +20,8 @@ router.get("/current", requireAuth, async (req, res) => {
         },
         {
         model: Spot,
-        attributes: [
-            "id",
-            "ownerId",
-            "address",
-            "city",
-            "state",
-            "country",
-            "lat",
-            "lng",
-            "name",
-            "price",
-        ],
+        attributes: ["id","ownerId","address","city","state","country",
+            "lat","lng","name","price"],
         include: [
             {
             model: SpotImage,
@@ -109,7 +97,7 @@ router.post("/:reviewId/images",requireAuth, async (req, res) => {
     // Check if the logged-in user is the owner of the spot
     if (findReview.userId !== req.user.id) {
         return res.status(403).json({
-            message: "forbidden",
+            message: "Forbidden",
         });
     }
     const maxImages = 10; 
