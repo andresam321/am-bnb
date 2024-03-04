@@ -50,7 +50,11 @@ const validateBookingDates = (req, res, next) => {
     if (!startDate || !endDate) {
         return res
         .status(400)
-        .json({ message: "Start date and end date are required" });
+        .json({ message: "Bad Request",
+        errors: {
+            "startDate": "startDate cannot be in the past",
+            "endDate": "endDate cannot be on or before startDate"
+        } });
     }
 
 
@@ -62,7 +66,11 @@ const validateBookingDates = (req, res, next) => {
     if (new Date(endDate) <= new Date(startDate)) {
         return res
         .status(400)
-        .json({ message: "End date must be after start date" });
+        .json({ message: "Bad Request",
+        errors: {
+            "startDate": "startDate cannot be in the past",
+            "endDate": "endDate cannot be on or before startDate"
+        } });
     }
     next();
 };
