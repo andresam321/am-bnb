@@ -235,7 +235,7 @@ router.get("/current", requireAuth, async (req, res) => {
 
     let avgRating;
         if (totalReviews == 0) {
-        avgRating = "No Reviews Yet";
+        avgRating = "No Rating Yet";
     } else {
         avgRating = totalStars / totalReviews;
     }
@@ -391,12 +391,12 @@ router.put('/:spotId', requireAuth, validateSpot, handleValidationErrors, async 
     // Check if the spot exists
     let spot = await Spot.findByPk(spotId);
     if (!spot) {
-        return res.status(404).json({ error: "Spot not found" });
+        return res.status(404).json({ message: "Spot not found" });
     }
 
     // Check if the user is authorized to update the spot
     if (spot.ownerId !== req.user.id) {
-        return res.status(403).json({ error: "Forbidden" });
+        return res.status(403).json({ message: "Forbidden" });
     }
 
     // Update the spot
@@ -444,6 +444,7 @@ router.delete("/:spotId", requireAuth, async(req,res) =>{
 //Get all Reviews by a Spot's id
 router.get('/:spotId/reviews', async (req, res) => {
     const spot = await Spot.findByPk(req.params.spotId)
+
     if (!spot) {
         res.status(404)
         return res.json({ message: "Spot couldn't be found" })
@@ -452,15 +453,16 @@ router.get('/:spotId/reviews', async (req, res) => {
     const allreviews = await Review.findAll({
         where: { spotId: req.params.spotId },
         include: [
-            { model: User },
+            {
+                model: User,
+                attributes: ['id', 'firstName', 'lastName']
+            },
             { model: ReviewImage, attributes: ["id", "url"] }
         ]
     })
 
-
-    return res.status(200).json({ Reviews: allreviews })
+    return res.json({ Reviews: allreviews })
 });
-
 router.post('/:spotId/reviews', requireAuth, validateReview,handleValidationErrors, async(req, res) => {
     try {
         const { review, stars } = req.body;
