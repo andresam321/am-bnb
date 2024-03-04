@@ -24,38 +24,70 @@ const validateDates = [
 ];
 
 
-router.get('/current', requireAuth,handleValidationErrors, async (req, res) => {
-    try {
-        // Mocked data based on the provided JSON
-        const formattedBookings = [
-            {
-                id: 1,
-                spotId: 1,
-                Spot: {
-                    id: 1,
-                    ownerId: 1,
-                    address: "123 Disney Lane",
-                    city: "San Francisco",
-                    state: "California",
-                    country: "United States of America",
-                    lat: 37.7645358,
-                    lng: -122.4730327,
-                    name: "App Academy",
-                    price: 123,
-                    previewImage: "image url"
-                },
-                userId: 2,
-                startDate: "2021-11-19",
-                endDate: "2021-11-20",
-                createdAt: "2021-11-19 20:39:36",
-                updatedAt: "2021-11-19 20:39:36"
-            }
-        ];
+router.get("/current", requireAuth, async (req, res) => {
+    const userId = req.user.id;
+    let allUserBookings = [];
 
-        return res.json({ 'Bookings': formattedBookings });
-    } catch (error) {
-        
+    const allBookings = await Booking.findAll({
+        where: {
+        userId,
+    },
+    include: {
+        model: Spot,
+        attributes: [
+        "id",
+        "ownerId",
+        "address",
+        "city",
+        "state",
+        "country",
+        "lat",
+        "lng",
+        "name",
+        "price",
+        ],
+        include: [
+        {
+            model: SpotImage,
+            attributes: ["url"],
+        },
+        ],
+    },
+    });
+    for (let eachBooking of allBookings) {
+    let previewImage;
+    if (!eachBooking.Spot.SpotImages.length) {
+        previewImage = "No Preview Images";
+    } else {
+        previewImage = eachBooking.Spot.SpotImages[0].url;
     }
+
+    allUserBookings.push({
+        id: eachBooking.id,
+        spotId: eachBooking.spotId,
+        Spot: {
+            id: eachBooking.Spot.id,
+        ownerId: eachBooking.Spot.ownerId,
+        address: eachBooking.Spot.address,
+        city: eachBooking.Spot.city,
+        state: eachBooking.Spot.state,
+        country: eachBooking.Spot.country,
+        lat: parseFloat(eachBooking.Spot.lat),
+        lng: parseFloat(eachBooking.Spot.lng),
+        name: eachBooking.Spot.name,
+        price: parseFloat(eachBooking.Spot.price),
+        previewImage,
+        },
+        userId,
+        startDate: new Date(eachBooking.startDate).toLocaleDateString(),
+        endDate: new Date(eachBooking.endDate).toLocaleDateString(),
+        createdAt: new Date(eachBooking.createdAt).toLocaleString(),
+        updatedAt: new Date(eachBooking.updatedAt).toLocaleString(),
+    });
+    }
+    if (!allUserBookings.length)
+    allUserBookings.push("You do not have any bookings yet");
+    return res.status(200).json({ Bookings: allUserBookings });
 });
 
 router.put("/:bookingId", requireAuth, validateDates, async (req, res) => {
