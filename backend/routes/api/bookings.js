@@ -1,6 +1,5 @@
 const express = require('express')
 const { check } = require('express-validator');
-const { validationResult } = require("express-validator");
 const { Op } = require('sequelize');
 const { requireAuth } = require("../../utils/auth")
 const {Spot, Review, SpotImage, User,ReviewImage,Booking} = require('../../db/models')
@@ -9,71 +8,33 @@ const {handleValidationErrors} =require("../../utils/validation")
 const router = express.Router()
 
 
-// const validateDates = [
-//     check('startDate')
-//         .exists({ checkFalsy: true })
-//         .custom((value, { req }) => {
-//             let startDateValidate = new Date(value)
-//             let currentDate = new Date()
+const validateDates = [
+    check('startDate')
+        .exists({ checkFalsy: true })
+        .custom((value, { req }) => {
+            let startDateValidate = new Date(value)
+            let currentDate = new Date()
 
-//             if (startDateValidate < currentDate) {
-//                 return false
-//             }
-//             return true
-//         })
-//         .withMessage('startDate cannot be in the past'),
-//     check('endDate')
-//         .exists({ checkFalsy: true })
-//         .custom((value, { req }) => {
-//             let startDateValidate = new Date(req.body.startDate)
-//             let endDateValidate = new Date(value)
+            if (startDateValidate < currentDate) {
+                return false
+            }
+            return true
+        })
+        .withMessage('startDate cannot be in the past'),
+    check('endDate')
+        .exists({ checkFalsy: true })
+        .custom((value, { req }) => {
+            let startDateValidate = new Date(req.body.startDate)
+            let endDateValidate = new Date(value)
 
-//             if (endDateValidate <= startDateValidate) {
-//                 return false
-//             }
-//             return true
-//         })
-//         .withMessage('endDate cannot be on or before startDate'),
-//     // handleValidationErrors
-// ];
-
-const validateBookingDates = (req, res, next) => {
-
-    let errors = validationResult(req);
-    if (errors.length > 0) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
-    let { startDate, endDate } = req.body;
-
-
-    if (!startDate || !endDate) {
-        return res
-        .status(400)
-        .json({ message: "Bad Request",
-        errors: {
-            "startDate": "startDate cannot be in the past",
-            "endDate": "endDate cannot be on or before startDate"
-        } });
-    }
-
-
-    if (isNaN(Date.parse(startDate)) || isNaN(Date.parse(endDate))) {
-        return res.status(400).json({ message: "Invalid date format" });
-    }
-
-
-    if (new Date(endDate) <= new Date(startDate)) {
-        return res
-        .status(400)
-        .json({ message: "Bad Request",
-        errors: {
-            "startDate": "startDate cannot be in the past",
-            "endDate": "endDate cannot be on or before startDate"
-        } });
-    }
-    next();
-};
+            if (endDateValidate <= startDateValidate) {
+                return false
+            }
+            return true
+        })
+        .withMessage('endDate cannot be on or before startDate'),
+    handleValidationErrors
+];
 
 
 router.get("/current", requireAuth, async (req, res) => {
@@ -95,7 +56,7 @@ router.get("/current", requireAuth, async (req, res) => {
         },
         ],
     },
-});
+    });
     for (let eachBooking of allBookings) {
     let previewImage;
     if (!eachBooking.Spot.SpotImages.length) {
@@ -132,63 +93,52 @@ router.get("/current", requireAuth, async (req, res) => {
     return res.status(200).json({ Bookings: allUserBookings });
 });
 
-router.put("/:bookingId", requireAuth, validateBookingDates,handleValidationErrors, async (req, res) => {
+router.put("/:bookingId", requireAuth, validateDates, async (req, res) => {
+    const { user } = req
+    const { bookingId } = req.params
+    const { startDate, endDate } = req.body
+    const currentDate = new Date()
 
-        let { user } = req;
-        let { bookingId } = req.params;
-        let { startDate, endDate } = req.body;
-        let currentDate = new Date();
-    
-    
-        let booking = await Booking.findOne({ where: { id: bookingId } });
-    
-    
-        if (!booking) {
-            return res.status(404).json({ message: "Booking couldn't be found" });
+    let editBooking = await Booking.findOne({
+        where: { id: bookingId }
+    })
+    if (!editBooking) return res.status(404).json({ message: "Booking couldn't be found" })
+    if (user.id != editBooking.userId) return res.status(403).json({ message: 'Forbidden' })
+
+    if (new Date(startDate) < currentDate || new Date(endDate) < currentDate) {
+        return res.status(403).json({
+            message: "Past bookings can't be modified"
+        })
+    }
+
+    // Booking Conflict
+    const existBooking = await Booking.findOne({
+        where: {
+            id: { [Op.ne]: bookingId },
+            spotId: editBooking.spotId,
+            [Op.and]: [
+                { startDate: { [Op.lte]: new Date(endDate) } },
+                { endDate: { [Op.gte]: new Date(startDate) } }
+            ]
         }
-    
-    
-        if (user.id !== booking.userId) {
-            return res.status(403).json({ message: "Forbidden" });
-        }
-    
-    
-        if (new Date(startDate) < currentDate || new Date(endDate) < currentDate) {
-            return res
-                .status(403)
-                .json({ message: "Past bookings can't be modified" });
+    })
+
+    if (existBooking) {
+        return res.status(403).json({
+            message: "Sorry, this spot is already booked for the specified dates",
+            error: {
+                startDate: "Start date conflicts with an existing booking",
+                endDate: "End Date conflicts with an existing booking"
             }
-    
-    
-        let conflict = await Booking.findOne({
-            where: {
-                id: { [Op.ne]: bookingId },
-                spotId: booking.spotId,
-                startDate: { [Op.lte]: new Date(endDate) },
-                endDate: { [Op.gte]: new Date(startDate) },
-            },
-            });
-            if (conflict) {
-                return res.status(403).json({
-                message: "Sorry, this spot is already booked for the specified dates",
-                    errors: {
-                    startDate: "Start date conflicts with an existing booking",
-                    endDate: "End date conflicts with an existing booking",
-                },
-            });
-        }
-    
-          // Update the booking's startDate and endDate if provided
-            if (startDate) booking.startDate = startDate;
-            if (endDate) booking.endDate = endDate;
-    
+        })
+    }
 
-    
-          // Save the changes
-            await booking.save();
-          // Return the updated booking
-            return res.json(booking);
-        
+    startDate ? editBooking.startDate = startDate : editBooking.startDate
+    endDate ? editBooking.endDate = endDate : editBooking.endDate
+
+    await editBooking.save()
+
+    return res.json(editBooking)
 });
 
 
