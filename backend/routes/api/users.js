@@ -46,7 +46,7 @@ const validateEmail = async (req,res,next) =>{
     );
     if (existingEmail) {
         console.log("line47",existingEmail)
-        res.json({
+        res.status(500).json({
             message: "User already exists",
             errors: {
             username: "User with that email already exists",
@@ -65,7 +65,7 @@ const validateUsername = async (req,res,next) =>{
     });
 
     if (existingUsername) {
-        res.json({
+        res.status(500).json({
             message: "User already exists",
             errors: {
             username: "User with that username already exists",
