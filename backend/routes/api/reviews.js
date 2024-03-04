@@ -8,85 +8,89 @@ const {handleValidationErrors} =require("../../utils/validation")
 const router = express.Router()
 
 router.get("/current", requireAuth, async (req, res) => {
-    try {
-        let userId = req.user.id;
+    let allUserReviews = [];
+    const user = req.user.id;
 
-        let reviews = await Review.findAll({
-            where: {
-                userId: userId,
+    const allReviews = await Review.findAll({
+    where: {
+        userId: user,
+    },
+    include: [
+        {
+        model: User,
+        attributes: ["id", "firstName", "lastName"],
+        },
+        {
+        model: Spot,
+        attributes: [
+            "id",
+            "ownerId",
+            "address",
+            "city",
+            "state",
+            "country",
+            "lat",
+            "lng",
+            "name",
+            "price",
+        ],
+        include: [
+            {
+            model: SpotImage,
+            attributes: ["url"],
             },
-            include: [
-                {
-                    model: User,
-                    attributes: ["id", "firstName", "lastName"],
-                },
-                {
-                    model: Spot,
-                    attributes: [
-                        "id",
-                        "ownerId",
-                        "address",
-                        "city",
-                        "state",
-                        "country",
-                        "lat",
-                        "lng",
-                        "name",
-                        "price",
-                    ],
-                    include: {
-                        model: SpotImage,
-                        as: "previewImage",
-                        where: { preview: true },
-                        attributes: ["url"],
-                        limit: 1,
-                    },
-                },
-                {
-                    model: ReviewImage,
-                    attributes: ["id", "url"],
-                },
-            ],
-        });
+        ],
+        },
+        {
+        model: ReviewImage,
+        attributes: ["id", "url"],
+        },
+    ],
+    });
 
-        // Format the reviews data
-        const formattedReviews = reviews.map(review => ({
-            id: review.id,
-            userId: review.userId,
-            spotId: review.spotId,
-            review: review.review,
-            stars: review.stars,
-            createdAt: review.createdAt,
-            updatedAt: review.updatedAt,
-            User: {
-                id: review.User.id,
-                firstName: review.User.firstName,
-                lastName: review.User.lastName,
-            },
-            Spot: {
-                id: review.Spot.id,
-                ownerId: review.Spot.ownerId,
-                address: review.Spot.address,
-                city: review.Spot.city,
-                state: review.Spot.state,
-                country: review.Spot.country,
-                lat: review.Spot.lat,
-                lng: review.Spot.lng,
-                name: review.Spot.name,
-                price: review.Spot.price,
-                previewImage: review.Spot.previewImage.length > 0 ? review.Spot.previewImage[0].url : null,
-            },
-            ReviewImages: review.ReviewImages.map(image => ({
-                id: image.id,
-                url: image.url,
-            })),
-        }));
+    if (!allReviews.length) allUserReviews = "No Reviews Yet";
 
-        res.status(200).json({ Reviews: formattedReviews });
-    } catch (error) {
-        
+    for (let eachReview of allReviews) {
+    let previewImage;
+    if (!eachReview.ReviewImages.length) {
+        previewImage = "No Reviews Images";
+    } else {
+        previewImage = eachReview.Spot.SpotImages[0].url;
     }
+
+    allUserReviews.push({
+        id: eachReview.id,
+        userId: eachReview.userId,
+        spotId: eachReview.spotId,
+        review: eachReview.review,
+        stars: parseFloat(eachReview.stars),
+        createdAt: new Date(eachReview.createdAt).toLocaleString(),
+        updatedAt: new Date(eachReview.updatedAt).toLocaleString(),
+        User: {
+            id: eachReview.User.id,
+            firstName: eachReview.User.firstName,
+            lastName: eachReview.User.lastName,
+        },
+        Spot: {
+            id: eachReview.Spot.id,
+            ownerId: eachReview.Spot.ownerId,
+            address: eachReview.Spot.address,
+            city: eachReview.Spot.city,
+            state: eachReview.Spot.state,
+            country: eachReview.Spot.country,
+            lat: parseFloat(eachReview.Spot.lat),
+            lng: parseFloat(eachReview.Spot.lng),
+            name: eachReview.Spot.name,
+            price: parseFloat(eachReview.Spot.price),
+            previewImage: previewImage,
+        },
+        ReviewImages: eachReview.ReviewImages,
+        });
+    }
+
+    return res.status(200).json({ Reviews: allUserReviews });
 });
+
 
 router.post("/:reviewId/images",requireAuth, async (req, res) => {
 
