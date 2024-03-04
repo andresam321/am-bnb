@@ -113,14 +113,10 @@ router.get("/current", requireAuth, async (req, res) => {
         previewImage,
         },
         userId,
-        startDate: eachBooking.startDate,
-        endDate: eachBooking.endDate,
-        createdAt: eachBooking.createdAt,
-        updatedAt: eachBooking.updatedAt
-        // startDate: new Date(eachBooking.startDate).toLocaleDateString(),
-        // endDate: new Date(eachBooking.endDate).toLocaleDateString(),
-        // createdAt: new Date(eachBooking.createdAt).toLocaleString(),
-        // updatedAt: new Date(eachBooking.updatedAt).toLocaleString(),
+        startDate: new Date(eachBooking.startDate).toLocaleDateString(),
+        endDate: new Date(eachBooking.endDate).toLocaleDateString(),
+        createdAt: new Date(eachBooking.createdAt).toLocaleString(),
+        updatedAt: new Date(eachBooking.updatedAt).toLocaleString(),
     });
     }
     if (!allUserBookings.length)
@@ -178,9 +174,7 @@ router.put("/:bookingId", requireAuth, validateBookingDates,handleValidationErro
             if (startDate) booking.startDate = startDate;
             if (endDate) booking.endDate = endDate;
     
-    
-            booking.startDate = formatstartEndDate(booking.startDate);
-                booking.endDate = formatstartEndDate(booking.endDate);
+
     
           // Save the changes
             await booking.save();
