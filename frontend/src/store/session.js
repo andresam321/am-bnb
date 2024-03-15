@@ -30,9 +30,9 @@ export const restoreUser = () => async dispatch => {
       dispatch(setUser(data.user));
       return response;
     
-  } catch (error) {
-      console.log(error)
-      return error
+  } catch (err) {
+      console.log(err)
+      return err
   }
 };
 
