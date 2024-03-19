@@ -26,26 +26,24 @@ useEffect(()=> {
     return (
     <header>
 
-    {spots && spots.map(spot => (
-        <div className=''>
-            <div key={spot.id} className>
-            <NavLink to={`/spots/${spot.id}`}>
-            <div title={spot.name}>
-            <img className="tile-image" src={spot.previewImage} alt={`${spot.name} preview image`} />
+{spots && spots.map(spot => (
+    <div className='spot-tile' key={spot.id}>
+        <NavLink to={`/spots/${spot.id}`}>
+            <div className="spot-tile-content" title={spot.name}>
+                <img className="tile-image" src={spot.previewImage} alt={`${spot.name} preview image`} />
                 <div className="listing-info-container">
                     <div className="location-container">
                         <div className="location">{`${spot.city}, ${spot.state}`}</div>
                         <div className="price">{`$${spot.price}/night`}</div>
-                </div>
+                    </div>
                     <div className="rating">
-                    <i className="fas fa-star">{`${spot.avgRating ? parseFloat(spot.avgRating).toFixed(1) : 'New'}`}</i>
+                        <i className="fas fa-star">{`${spot.avgRating ? parseFloat(spot.avgRating).toFixed(1) : 'New'}`}</i>
+                    </div>
                 </div>
             </div>
-            </div>
-            </NavLink>
-        </div>  
-        </div>
-        ))}
+        </NavLink>
+    </div>  
+))}
 </header>
     )
 }
