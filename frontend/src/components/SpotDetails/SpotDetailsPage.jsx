@@ -2,6 +2,7 @@ import { useDispatch,useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { getSpotDetails } from '../../store/spots'
 import { useParams } from 'react-router-dom'
+import GetSpotReviews from './GetSpotReviews'
 
 const SpotDetailsPage = () => {
     const {spotId} = useParams()
@@ -15,7 +16,17 @@ const SpotDetailsPage = () => {
 
     const handleReserveClick = () => {
         alert("Feature coming soon!")
-      };
+    };
+
+    const reviews = () => {
+        if (selectedSpot.numReviews > 1 && selectedSpot.avgStarRating) {
+            return (`${selectedSpot.avgStarRating.toFixed(1)} · ${selectedSpot.numReviews} reviews`);
+        }
+        if (selectedSpot.numReviews === 1 && selectedSpot.avgStarRating) {
+            return (`${selectedSpot.avgStarRating.toFixed(1)} · ${selectedSpot.numReviews} review`);
+        }
+        return 'New';
+    }
 
 
 return (
@@ -39,8 +50,8 @@ return (
                 </div>
                 <div className="spot-callout-container">
                     <div className="spot-callout-info">
-                    <p><span className="spot-callout-price">{`$${selectedSpot.price}`}</span><span className="price-night">night</span></p>
-                    {/* <p><i className="fa-solid fa-star"></i><span className="rating-review"> {reviews()}</span></p> */}
+                    <p><span className="">{`$${selectedSpot.price}`}</span><span className="price-night">night</span></p>
+                    <p><i className=""></i><span className="rating-review"> {reviews()}</span></p>
                 <button
                     className="reserve-button"
                     onClick={handleReserveClick}>Reserve
@@ -48,7 +59,10 @@ return (
                 </div>
                 </div>
             </section>
-
+                <div className=''>
+                    <h1><i className=""></i><span className=""> {reviews()}</span></h1>
+                    <GetSpotReviews />
+                </div>
             </div>
         )}
     </div>
