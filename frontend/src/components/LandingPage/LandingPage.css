@@ -1,3 +1,46 @@
-*{
-    color: red;
-}
+.spot-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Adjust alignment as per your preference */
+    padding: 20px; /* Adjust padding as needed */
+  }
+  
+  .spot-tile {
+    width: calc(30% - 20px); /* Set width to fit 3 spots per row with margins */
+    margin-bottom: 30px; /* Adjust margin between tiles */
+    padding: 20px; /* Add padding to the tiles */
+    border-radius: 12px; /* Add border radius for rounded corners */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Add box shadow effect with increased strength */
+    transition: box-shadow 0.3s ease; /* Add transition effect for smoother shadow */
+  }
+  
+  .spot-tile:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4); /* Change shadow on hover for interactive effect with increased strength */
+  }
+  
+  .tile-image {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Adjust border radius as needed */
+  }
+  
+  .info-container {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  
+  .location {
+    font-size: 16px;
+    margin-bottom: 8px; /* Adjust margin as needed */
+  }
+  
+  .price {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .rating {
+    margin-top: 8px; /* Adjust margin as needed */
+    font-size: 16px;
+  }

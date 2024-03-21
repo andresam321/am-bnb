@@ -22,15 +22,15 @@ module.exports = {
     await ReviewImage.bulkCreate([
       { 
         reviewId: 1,
-        url: 'https://example.com/image1.jpg'
+        url: 'https://res.cloudinary.com/djuzk5um3/image/upload/v1710978749/am-bnb%20authme_Project/3df9100478b396c63430be33820247e4-uncropped_scaled_within_1536_1152_oysg3t.webp'
       },
       { 
         reviewId: 2,
-        url: 'https://example.com/image2.jpg'
+        url: 'https://res.cloudinary.com/djuzk5um3/image/upload/v1710978749/am-bnb%20authme_Project/3df9100478b396c63430be33820247e4-uncropped_scaled_within_1536_1152_oysg3t.webp'
       },
       { 
         reviewId: 3,
-        url: 'https://example.com/image3.jpg'
+        url: 'https://res.cloudinary.com/djuzk5um3/image/upload/v1710978749/am-bnb%20authme_Project/3df9100478b396c63430be33820247e4-uncropped_scaled_within_1536_1152_oysg3t.webp'
       },
     ])
   },
@@ -47,9 +47,9 @@ module.exports = {
     return queryInterface.bulkDelete(options, {
       url: {
         [Op.in]: [
-          'https://example.com/image1.jpg',
-          'https://example.com/image2.jpg',
-          'https://example.com/image3.jpg'
+          'https://res.cloudinary.com/djuzk5um3/image/upload/v1710978749/am-bnb%20authme_Project/3df9100478b396c63430be33820247e4-uncropped_scaled_within_1536_1152_oysg3t.webp',
+          'https://res.cloudinary.com/djuzk5um3/image/upload/v1710978749/am-bnb%20authme_Project/3df9100478b396c63430be33820247e4-uncropped_scaled_within_1536_1152_oysg3t.webp',
+          'https://res.cloudinary.com/djuzk5um3/image/upload/v1710978749/am-bnb%20authme_Project/3df9100478b396c63430be33820247e4-uncropped_scaled_within_1536_1152_oysg3t.webp'
         ],
       },
     }, {});

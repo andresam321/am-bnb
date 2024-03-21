@@ -6,6 +6,8 @@ const GET_SPOT = "SPOT/GET_SPOT";
 
 const CREATE_SPOT = "SPOT/CREATE_SPOT"
 
+const GET_USERS_CURRENT_SPOTS = "SPOTS/GET_USERS_CURRENT_SPOTS"
+
 
 const getSpots = (spots) =>({
     type:GET_SPOTS,
@@ -22,6 +24,23 @@ const createSpot = (spot) =>({
     spot
 })
 
+const getUsersCurrentSpots = (spots) =>({
+    type: GET_USERS_CURRENT_SPOTS,
+    spots
+})
+
+
+//thunks
+
+
+export const getUsersSpots = () => async dispatch => {
+    const response = await csrfFetch(`/api/spots/current`)
+    const userSpots = await response.json()
+
+    dispatch(getUsersCurrentSpots(userSpots))
+
+    return userSpots
+}
 
 
 export const createNewSpot = (spot, images) => async dispatch => {
@@ -43,7 +62,7 @@ export const createNewSpot = (spot, images) => async dispatch => {
             url && (
                 csrfFetch(`/api/spots/${newSpot.id}/images`, {
                     method: "POST",
-                    headers: {"Content-Type":"application/json"},
+                    headers: { "Content-Type":"application/json" },
                     body: JSON.stringify({
                         url: url,
                         preview: true
@@ -62,7 +81,7 @@ export const getAllSpots = () => async dispatch => {
     })
 
     const data = await response.json()
-    // console.log(data)
+    console.log("line65 at the spot action",data)
     dispatch(getSpots(data));
     return response
 }
@@ -88,6 +107,15 @@ function spotsReducer(state = {}, action){
         }
         case GET_SPOT: {
             const newState = {[action.spot.id]: action.spot}
+            return newState
+        }
+        case CREATE_SPOT:{
+            const newState = {...state, [action.spot.id]: action.spot}
+            return newState
+        }
+        case GET_USERS_CURRENT_SPOTS: {
+            const newState = {}
+            action.spots.Spots.forEach(spot => newState[spot.id] = spot)
             return newState
         }
         default:

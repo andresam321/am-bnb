@@ -20,18 +20,18 @@ module.exports = {
     await SpotImage.bulkCreate([
     { 
       spotId: 1,
-      url: 'https://example.com/spotimage1.jpg',
+      url: 'https://res.cloudinary.com/djuzk5um3/image/upload/v1710977593/am-bnb%20authme_Project/23738d097f841c61bd654a8d49c6e303-cc_ft_1344_jfjwdt.webp',
       preview: true
     },
     { 
       spotId: 2,
-      url: 'https://example.com/spotimage2.jpg',
-      preview: false
+      url: 'https://res.cloudinary.com/djuzk5um3/image/upload/v1710978037/am-bnb%20authme_Project/0d7889bbc3de991708ca9bf0ff27bf1e-cc_ft_1344_ee9sky.webp',
+      preview: true
     },
     { 
       spotId: 3,
-      url: 'https://example.com/spotimage3.jpg',
-      preview: false
+      url: 'https://res.cloudinary.com/djuzk5um3/image/upload/v1710978433/am-bnb%20authme_Project/38a2061712557953e15f71ff0bc43d8c-cc_ft_1344_dq4nty.webp',
+      preview: true
     },
     ])
   },
@@ -48,9 +48,9 @@ module.exports = {
       return queryInterface.bulkDelete(options, {
         url: {
           [Op.in]: [
-            'https://example.com/spotimage1.jpg',
-            'https://example.com/spotimage2.jpg',
-            'https://example.com/spotimage3.jpg',
+            'https://res.cloudinary.com/djuzk5um3/image/upload/v1710977593/am-bnb%20authme_Project/23738d097f841c61bd654a8d49c6e303-cc_ft_1344_jfjwdt.webp',
+            'https://res.cloudinary.com/djuzk5um3/image/upload/v1710978037/am-bnb%20authme_Project/0d7889bbc3de991708ca9bf0ff27bf1e-cc_ft_1344_ee9sky.webp',
+            'https://res.cloudinary.com/djuzk5um3/image/upload/v1710978433/am-bnb%20authme_Project/38a2061712557953e15f71ff0bc43d8c-cc_ft_1344_dq4nty.webp',
           ]
         },
     }, {});

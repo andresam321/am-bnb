@@ -145,6 +145,16 @@ router.get('/', validateQuery, async (req, res) => {
 
 
         const spots = await Spot.findAll({
+            include:[
+                {
+                    model: Review,
+                    attributes: ["stars"],
+                },
+                {
+                    model: SpotImage,
+                    attributes: ["url"],
+                },
+            ],
             ...pagObj,
             ...searchObj
         });
@@ -166,10 +176,13 @@ router.get('/', validateQuery, async (req, res) => {
                 }
 
             // Determine the preview image URL for the spot
-            let previewImage = 'No image provided';
-            if (spot.SpotImage && spot.SpotImage.PreviewImage) {
-                previewImage = spot.SpotImage.PreviewImage.url;
+            let previewImage;
+            if (!spot.SpotImages.length) {
+                previewImage = "No Preview Image";
+            } else {
+                previewImage = spot.SpotImages[0].url; // Take the first spot image URL
             }
+        
 
             // Create a new object representing the transformed spot
             const transformedSpot = {

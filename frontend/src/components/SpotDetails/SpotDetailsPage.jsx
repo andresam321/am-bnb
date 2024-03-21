@@ -3,6 +3,8 @@ import { useEffect } from 'react'
 import { getSpotDetails } from '../../store/spots'
 import { useParams } from 'react-router-dom'
 import GetSpotReviews from './GetSpotReviews'
+import "../SpotDetails/SpotDetails.css"
+
 
 const SpotDetailsPage = () => {
     const {spotId} = useParams()
@@ -30,42 +32,48 @@ const SpotDetailsPage = () => {
 
 
 return (
+<div>
+    {selectedSpot && (
+    <div className='body'>
     <div>
-        {selectedSpot && (
-            <div className='body'>
-                <div className=''>
-                    <h2>{selectedSpot.name}</h2>
-                    <h3>{`${selectedSpot.city},${selectedSpot.state},${selectedSpot.country}`}</h3>
-                </div>
-                <div className=''>
-                    <img className="small-image" src={selectedSpot.SpotImages?.[1]?.url} alt="small image one" />
-                    <img className="small-image" src={selectedSpot.SpotImages?.[2]?.url} alt="small image two" />
-                    <img className="small-image" src={selectedSpot.SpotImages?.[3]?.url} alt="small image three" />
-                    <img className="small-image" src={selectedSpot.SpotImages?.[4]?.url} alt="small image four" />
-                </div>
-                <section className="info-container">
-                <div className="description-container">
-                    <h3>{`Hosted by ${selectedSpot.Owner?.firstName}, ${selectedSpot.Owner?.lastName}`}</h3>
-                    <p>{selectedSpot.description}</p>
-                </div>
-                <div className="spot-callout-container">
-                    <div className="spot-callout-info">
-                    <p><span className="">{`$${selectedSpot.price}`}</span><span className="price-night">night</span></p>
-                    <p><i className=""></i><span className="rating-review"> {reviews()}</span></p>
-                <button
-                    className="reserve-button"
-                    onClick={handleReserveClick}>Reserve
-                </button>
-                </div>
-                </div>
-            </section>
-                <div className=''>
-                    <h1><i className=""></i><span className=""> {reviews()}</span></h1>
-                    <GetSpotReviews />
-                </div>
-            </div>
-        )}
+        <h2>{selectedSpot.name}</h2>
+        <h3>{`${selectedSpot.city}, ${selectedSpot.state}, ${selectedSpot.country}`}</h3>
     </div>
+        <div className='images-container'>
+        <img className="big-image" src={selectedSpot.SpotImages?.[0]?.url || "https://res.cloudinary.com/djuzk5um3/image/upload/v1710993252/am-bnb%20authme_Project/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available_ykibfw.webp"} alt="big image" />
+        <div className="small-images-container">
+            <div>
+            <img className="small-image" src={selectedSpot.SpotImages?.[1]?.url || "https://res.cloudinary.com/djuzk5um3/image/upload/v1710993252/am-bnb%20authme_Project/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available_ykibfw.webp"} alt="small image one" />
+            <img className="small-image" src={selectedSpot.SpotImages?.[2]?.url || "https://res.cloudinary.com/djuzk5um3/image/upload/v1710993252/am-bnb%20authme_Project/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available_ykibfw.webp"} alt="small image two" />
+            </div>
+        <div>
+            <img className="small-image" src={selectedSpot.SpotImages?.[3]?.url || "https://res.cloudinary.com/djuzk5um3/image/upload/v1710993252/am-bnb%20authme_Project/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available_ykibfw.webp"} alt="small image three" />
+            <img className="small-image" src={selectedSpot.SpotImages?.[4]?.url || "https://res.cloudinary.com/djuzk5um3/image/upload/v1710993252/am-bnb%20authme_Project/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available_ykibfw.webp"} alt="small image four" />
+        </div>
+        </div>
+    </div>
+    <section className="info-container">
+        <div className="description-container">
+            <h3>{`Hosted by ${selectedSpot.Owner?.firstName}, ${selectedSpot.Owner?.lastName}`}</h3>
+            <p>{selectedSpot.description}</p>
+        </div>
+        <div className="spot-container">
+            <div className="spot-info">
+            <p><span className="">{`$${selectedSpot.price}`}</span><span className="price-night">night</span></p>
+            <p><i className=""></i><span className="rating-review"> {reviews()}</span></p>
+            <button className="reserve-button" onClick={handleReserveClick}>Reserve</button>
+        </div>
+        </div>
+    </section>
+    <div>
+        <h1><i className=""></i><span className=""> {reviews()}</span></h1>
+        <GetSpotReviews />
+    </div>
+    </div>
+)}
+</div>
+
+
     )
 }
 
