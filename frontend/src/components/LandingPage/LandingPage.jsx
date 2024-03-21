@@ -11,9 +11,11 @@ const dispatch = useDispatch()
 // console.log("line11",getAllSpots)
 // console.log(Array.isArray("line12",getAllSpots))
 let spots = useSelector(state => state.spotsReducer);
-console.log("line14", spots)
+console.log("line14 stateeeeeeeeee", spots)
 
 spots = Object.values(spots)
+
+console.log("line18 turned into array",spots)
 
 // console.log(Array.isArray(spots))
 
@@ -24,26 +26,24 @@ useEffect(()=> {
 
 
     return (
-    <header>
-
-{spots && spots.map(spot => (
-    <div className='spot-tile' key={spot.id}>
-        <NavLink to={`/spots/${spot.id}`}>
-            <div className="spot-tile-content" title={spot.name}>
-                <img className="tile-image" src={spot.previewImage} alt={`${spot.name} preview image`} />
-                <div className="listing-info-container">
-                    <div className="location-container">
-                        <div className="location">{`${spot.city}, ${spot.state}`}</div>
-                        <div className="price">{`$${spot.price}/night`}</div>
-                    </div>
-                    <div className="rating">
-                        <i className="fas fa-star">{`${spot.avgRating ? parseFloat(spot.avgRating).toFixed(1) : 'New'}`}</i>
-                    </div>
+<header>
+    <div className="spot-container">
+    {spots &&
+        spots.map((spot) => (
+        <div className="spot-tile" key={spot.id}>
+            <NavLink to={`/spots/${spot.id}`}>
+            <img className="tile-image" src={spot.previewImage || "https://res.cloudinary.com/djuzk5um3/image/upload/v1710993252/am-bnb%20authme_Project/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available_ykibfw.webp"} alt={`${spot.name} preview image`} />
+            <div className="info-container">
+            <div className="location">{`${spot.city}, ${spot.state}`}</div>
+                <div className="price">{`$${spot.price}/night`}</div>
+                <div className="rating">
+                <i className="fas fa-star">{`${spot.avgRating ? parseFloat(spot.avgRating).toFixed(1) : 'New'}`}</i>
                 </div>
             </div>
-        </NavLink>
-    </div>  
-))}
+            </NavLink>
+        </div>
+        ))}
+</div>
 </header>
     )
 }

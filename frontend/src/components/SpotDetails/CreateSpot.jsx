@@ -13,30 +13,30 @@ const [address, setAddress] = useState("")
 const [city,setCity] = useState("")
 const [state, setState] = useState("")
 const [country,setCountry] = useState("")
-const [lat,setLat] = useState(50)
-const [lng,setLng] = useState(0)
+const [lat,setLat] = useState(89)
+const [lng,setLng] = useState(170)
 const [name,setName] = useState("")
-const [description,setDescription] = useState("")
+const [description,setDescription] = useState('')
 const [price,setPrice] = useState("")
 // const [avgRating, setRating] = useState("")
-const [previewImage, setPreviewImage] = useState("")
+const [previewImage, setPreviewImage] = useState('')
 const [imageTwo, setImageTwo] = useState('');
 const [imageThree, setImageThree] = useState('');
 const [imageFour, setImageFour] = useState('');
 const [imageFive, setImageFive] = useState('');
-const [formSubmitted, setFormSubmitted] = useState(false);
-const [touched,setTouched] = useState(false)
+// const [formSubmitted, setFormSubmitted] = useState(false);
+// const [touched,setTouched] = useState(false)
 
 const [validations, setValidations] = useState({});
 
 
 useEffect(() =>{
-    if (!formSubmitted && !touched) return;
-    setLat();
-    setLng();
-    setFormSubmitted()
-    setTouched()
-    // !currentUser && navigate('/');
+    // if (!formSubmitted && !touched) return;
+    setLat(90);
+    setLng(180);
+    // setFormSubmitted()
+    // setTouched()
+    !currentUser && navigate('/');
 
     const validationsObj = {}
 
@@ -69,7 +69,7 @@ useEffect(() =>{
 
     // navigate("/")
 
-}, [formSubmitted,touched,address,city,state,country,name,description,price,previewImage])
+}, [address,city,state,country,name,description,price,previewImage,currentUser,navigate])
 
 const handleSubmit = async (e) =>{
     e.preventDefault()
@@ -85,7 +85,6 @@ const handleSubmit = async (e) =>{
         price,
         lat,
         lng,
-        previewImage
     }
     const newImages = {
         previewImage,
@@ -148,7 +147,7 @@ const handleSubmit = async (e) =>{
                         />
                     </label>
                     {validations.state && <span className="validation-message">{validations.state}</span>}
-                    <label htmlFor="lat">
+                    {/* <label htmlFor="lat">
                         Latitude
                         <input
                         type="text"
@@ -165,7 +164,7 @@ const handleSubmit = async (e) =>{
                         placeholder="Longitude"
                         value={lng}
                         onChange={(e) => setLng(e.target.value)} />
-                    </label> 
+                    </label>  */}
                 </div>
                 <div className="section-2">
                     <div className="">
@@ -214,7 +213,7 @@ your place special.</p>
                         value={previewImage}
                         onChange={(e)=> setPreviewImage(e.target.value)}
                         />
-                        {validations.previewImg && <span className="validation-message">{validations.previewImg}</span>}
+                        {validations.previewImage && <span className="validation-message">{validations.previewImage}</span>}
                         <input
                         type="text"
                         placeholder="Image URL"

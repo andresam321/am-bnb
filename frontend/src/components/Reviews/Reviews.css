@@ -1,0 +1,12 @@
+.stars {
+    cursor: pointer;
+    margin-right: 5px; /* Adjust margin for spacing between stars */
+}
+
+input[type=radio] {
+    display: none;
+}
+.stars-container {
+    display: flex;
+    align-items: center;
+}
