@@ -399,7 +399,7 @@ router.post("/:spotId/images",requireAuth, async (req, res) => {
 
 router.put('/:spotId', requireAuth, validateSpot, handleValidationErrors, async (req, res) => {
     const spotId = req.params.spotId;
-    const { address, city, state, country, lat, lng, name, description } = req.body;
+    const { address, city, state, country, lat, lng, name, description,price } = req.body;
 
     // Check if the spot exists
     let spot = await Spot.findByPk(spotId);
@@ -421,7 +421,8 @@ router.put('/:spotId', requireAuth, validateSpot, handleValidationErrors, async 
         lat,
         lng,
         name,
-        description
+        description,
+        price
     });
 
     res.status(200).json(spot);

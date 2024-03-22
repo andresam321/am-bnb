@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import OpenModalButton from "../OpenModalButton/OpenModalButton"
+// import OpenModalButton from "../OpenModalButton/OpenModalButton"
 import { useModal } from "../../context/Modal"
 import { FaStar } from 'react-icons/fa';
 import { createReviewBySpotId } from "../../store/reviews"
@@ -12,12 +12,12 @@ const CreateReview = () => {
     const {spotId} = useParams()
     let reviews = useSelector(state => state.reviewsReducer)
     reviews = Object.values(reviews)
-    // console.log("line13 checking for reviews", reviews)
+    console.log("line13 checking for reviews", reviews)
     const sessionUser = useSelector(state => state.session.user?.id);
     // console.log("line14 this is the session user",sessionUser)
 
     const spotOwner = useSelector(state => state.spotsReducer?.[spotId].ownerId)
-    // console.log("line15 spotOwner",spotOwner)
+    console.log("line15 spotOwner",spotOwner)
     
     // console.log("line14 line <=", reviews)
 
@@ -68,10 +68,10 @@ const CreateReview = () => {
 return (
     <>
         {sessionUser && (sessionUser !== spotOwner) && !reviewed && (
-            <OpenModalButton
-                className = "post-review-button"
-                buttonText="Post your Review"
-                modalComponent={
+            // <OpenModalButton
+            //     className = "post-review-button"
+            //     buttonText="Post your Review"
+            //     modalComponent={
                     <form onSubmit={submitHandler}>
                         <h2>How was your stay?</h2>
                             <textarea 
@@ -79,7 +79,7 @@ return (
                             placeholder="Leave your review here..."
                             minLength={10}
                             value={review}
-                            onChange={e =>setReview(e.target.value)}
+                            onChange={(e) =>setReview(e.target.value)}
                             />
                             <div className="">
                                 {starRatings.map((star,index)=>{
@@ -110,8 +110,8 @@ return (
                             Submit Your Review
                             </button>
                     </form>
-                }
-            />
+               // }
+             // />
         )}
     </>
     )

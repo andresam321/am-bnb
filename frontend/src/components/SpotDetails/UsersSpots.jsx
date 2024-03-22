@@ -2,7 +2,8 @@ import { useNavigate, NavLink } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { getUsersSpots } from "../../store/spots"
-// import OpenModalButton from "../OpenModalButton/OpenModalButton"
+import DeleteSpot from "./DeleteSpot"
+import OpenModalButton from "../OpenModalButton/OpenModalButton"
 
 
 const UsersSpots = () => {
@@ -47,6 +48,8 @@ const UsersSpots = () => {
                                 </div>
                             </div>
                         </NavLink>
+                        <button className="update-spot-button" onClick={() => navigate(`/spots/${spot.id}/edit`)}>Update</button>
+                        <OpenModalButton buttonText={"Delete"} modalComponent={<DeleteSpot spotId={spot.id} /> } />
                     </div>
                 ))}
             </div>
