@@ -10,8 +10,9 @@ const SpotDetailsPage = () => {
     const {spotId} = useParams()
     const dispatch = useDispatch()
     const spot = useSelector(state => state.spotsReducer)
+    console.log("line13", spot)
     const selectedSpot = spot[spotId]
-
+    console.log("line14 ", selectedSpot)
     useEffect(()=>{
         dispatch(getSpotDetails(spotId))
     },[dispatch,spotId])
