@@ -14,13 +14,13 @@ function Navigation({ isLoaded }) {
         <NavLink to="/" className="home-nav">
           <div className='home-button'>
             <img src={logo} className='logo'/>
-            <h3>WELCOME TO ....</h3>
+            {/* <h3>WELCOME TO ....</h3> */}
           </div>
         </NavLink>
       </div>
       <section className='top-right-buttons'>
       {sessionUser && (
-        <div>
+        <div className='nav-link'>
           <NavLink className="create-new-spot-nav" to='/spots/new'>
             Add a New Spot
           </NavLink>

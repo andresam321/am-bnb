@@ -3,12 +3,14 @@ import { useEffect } from 'react'
 import { getSpotDetails } from '../../store/spots'
 import { useParams } from 'react-router-dom'
 import GetSpotReviews from './GetSpotReviews'
+// import DeleteReview from '../Reviews/DeleteReview'
 import "../SpotDetails/SpotDetails.css"
 
 
 const SpotDetailsPage = () => {
     const {spotId} = useParams()
     const dispatch = useDispatch()
+    // const [reviewPosted, setReviewPosted] = useState(false);
     const spot = useSelector(state => state.spotsReducer)
     console.log("line13", spot)
     const selectedSpot = spot[spotId]
@@ -68,7 +70,7 @@ return (
     </section>
     <div>
         <h1><i className=""></i><span className=""> {reviews()}</span></h1>
-        <GetSpotReviews />
+        <GetSpotReviews/>
     </div>
     </div>
 )}

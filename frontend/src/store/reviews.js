@@ -4,7 +4,7 @@ const GET_REVIEWS = "reviews/GET_REVIEWS"
 
 const CREATE_REVIEW = "reviews/CREAT_REVIEW"
 
-// const DELETE_REVIEW = "REVIEWS/DELETE_REVIEW"
+const DELETE_REVIEW = "reviews/DELETE_REVIEW"
 
 
 const getReviews = (reviews) => {
@@ -21,7 +21,23 @@ const createReview = (review) =>{
         review
     }
 }
+
+const deleteReview = (reviewId) => ({
+    type:DELETE_REVIEW,
+    reviewId
+})
 //thunks
+
+
+export const deleteReviewById = (reviewId) => async dispatch => {
+   const response = await csrfFetch(`/api/reviews/${reviewId}`,{
+        method: 'DELETE'
+    })
+
+    await dispatch(deleteReview(reviewId))
+
+    response.json(`Succesfully deleted review ${reviewId}`)
+}
 
 export const createReviewBySpotId = (review,spotId) => async dispatch =>{
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
@@ -57,6 +73,11 @@ function reviewsReducer(state = {}, action){
         }
         case CREATE_REVIEW:{
             const newState = {...state, [action.review.id]: action.review}
+            return newState
+        }
+        case DELETE_REVIEW:{
+            const newState = {...state}
+            delete newState[action.reviewId]
             return newState
         }
         default:
