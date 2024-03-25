@@ -145,24 +145,28 @@ function spotsReducer(state = {}, action){
             const newState = {[action.spot.id]: action.spot}
             return newState
         }
-        case GET_USERS_CURRENT_SPOTS: {
-            const newState = {}
-            action.spots.Spots.forEach(spot => newState[spot.id] = spot)
-            return newState
-        }
         case CREATE_SPOT:{
             const newState = {...state, [action.spot.id]: action.spot}
             return newState
         }
-        case DELETE_SPOT: {
-            const newState = {...state}
-            delete newState[action.spotId]
-            return newState
+        case GET_USERS_CURRENT_SPOTS: {
+            const newState = {}
+            if (Array.isArray(action.spots.Spots)) {
+                action.spots.Spots.forEach((spot) => {
+                    newState[spot.id] = spot;
+                });
+            }
+            return newState;
         }
         case UPDATE_SPOT: {
             const newState = {...state, [action.spot.id]: action.spot}
             return newState;
             
+        }
+        case DELETE_SPOT: {
+            const newState = {...state}
+            delete newState[action.spotId]
+            return newState
         }
         default:
             return state
