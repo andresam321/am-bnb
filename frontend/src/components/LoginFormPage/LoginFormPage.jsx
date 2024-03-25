@@ -19,7 +19,7 @@ function LoginFormPage() {
     return dispatch(sessionActions.login({ credential, password })).catch(
       async (res) => {
         const data = await res.json();
-        if (data?.message) setErrors(data.message);
+        if (data?.errors) setErrors(data.errors);
       }
     );
   };
@@ -47,7 +47,8 @@ function LoginFormPage() {
           />
         </label>
         {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit">Log In</button>
+        <button 
+        type="submit">Log In</button>
       </form>
     </>
   );

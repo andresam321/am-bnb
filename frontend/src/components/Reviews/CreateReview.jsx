@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 // import OpenModalButton from "../OpenModalButton/OpenModalButton"
-import { useModal } from "../../context/Modal"
+// import { useModal } from "../../context/Modal"
 import { FaStar } from 'react-icons/fa';
 import { createReviewBySpotId } from "../../store/reviews"
 import './Reviews.css'
@@ -22,7 +22,7 @@ const CreateReview = () => {
     // console.log("line14 line <=", reviews)
 
 
-    const { closeModal } = useModal()
+    // const { closeModal } = useModal()
 
     const [review,setReview] = useState('')
     const [hover,setHover] = useState(0)
@@ -59,7 +59,7 @@ const CreateReview = () => {
             stars
         }
         await dispatch(createReviewBySpotId(newReview,spotId))
-        closeModal();
+        // closeModal();
         reset()
     }
     const reviewed = reviews?.find(review => review.userId === sessionUser)
@@ -70,7 +70,7 @@ return (
         {sessionUser && (sessionUser !== spotOwner) && !reviewed && (
             // <OpenModalButton
             //     className = "post-review-button"
-            //     buttonText="Post your Review"
+            //     buttonText ={"Post your Review"}
             //     modalComponent={
                     <form onSubmit={submitHandler}>
                         <h2>How was your stay?</h2>
@@ -79,8 +79,9 @@ return (
                             placeholder="Leave your review here..."
                             minLength={10}
                             value={review}
-                            onChange={(e) =>setReview(e.target.value)}
+                            onChange={e =>setReview(e.target.value)}
                             />
+                            {validations.review && <span className="validation-message">{validations.review}</span>}
                             <div className="">
                                 {starRatings.map((star,index)=>{
                                     const rating = index + 1
@@ -98,20 +99,22 @@ return (
                                                 onMouseEnter={() => setHover(rating)}
                                                 onMouseLeave={() => setHover(0)}
                                                 />
+                                                {validations.star && <span className="validation-message">{validations.star}</span>}
                                         </label>
                                     )
                                 })}
                                 Stars
                             </div>
                             <button
-                            disabled={Object.values(validations).length}
+                            // disabled={Object.values(validations).length}
                             className=""
                             type="submit">
                             Submit Your Review
                             </button>
+                            
                     </form>
                // }
-             // />
+           // />
         )}
     </>
     )

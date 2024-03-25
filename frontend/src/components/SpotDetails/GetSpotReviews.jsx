@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { getReviewsBySpotId } from "../../store/reviews"
 import CreateReview from "../Reviews/CreateReview"
+import DeleteReview from '../Reviews/DeleteReview'
+import "./GetSpotReviews.css"
 
-console.log("LINE7",CreateReview)
 
 
 
@@ -52,31 +53,25 @@ const months = [
 
 return (
 
-    <div>
-        <CreateReview/>
-    
-    {!reviews.length && sessionUser && sessionUser !== spot?.Owner?.id && 
-    (
-        <p>Be the first to post a review</p>
-    )}
-        <div>
-            {
-                reviews.map(review => (
-                    <div key={review.id}>
-                        <div className="">
-                            <p>{review.User?.firstName}</p>
-                            <p>{review.review}</p>
-                            <span>{`${months[new Date(review.createdAt).getMonth()]} ${new Date(review.createdAt).getFullYear()}`}</span>   
-                        </div>
-                    </div>
-                ))
+<div>
+    <CreateReview />
+        {!reviews.length && sessionUser && sessionUser !== spot?.Owner?.id &&
+                <p>Be the first to post a review</p>
             }
+        <div className="reviews-container">
+                {reviews.map(review => (
+                <div key={review.id} className="review">
+                    <div className="review-content">
+                        <p>{review.User?.firstName}</p>
+                        <p>{review.review}</p>
+                        <span>{`${months[new Date(review.createdAt).getMonth()]} ${new Date(review.createdAt).getFullYear()}`}</span>
+                    </div>
+                        {review.userId === sessionUser && <DeleteReview reviewId={review.id} spotId={spotId} />}
+                </div>
+                ))}
+            </div>
         </div>
-    
-</div>
-    
-
-)
+    );
 }
 
 export default GetSpotReviews

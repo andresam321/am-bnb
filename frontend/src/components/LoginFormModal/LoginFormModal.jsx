@@ -8,6 +8,7 @@ function LoginFormModal() {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
+  // const [buttonDisable, setButtonDisable] = useState(true)
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
@@ -23,6 +24,21 @@ function LoginFormModal() {
         }
       });
   };
+  const demoUserLogIn = async () => {
+    const response = await dispatch(sessionActions.login({"credential": 'Demo-lition', "password": 'password'}))
+    if(response.ok){
+      closeModal();
+    }
+  }
+
+  // useEffect(() => {
+  //   if(credential.length < 4 || password.length < 6){
+  //     setButtonDisable(true)
+  //   } else {
+  //     setButtonDisable(false)
+  //   }
+  // }, [credential, password])
+
 
   return (
     <>
@@ -48,6 +64,7 @@ function LoginFormModal() {
         </label>
         {errors.credential && <p>{errors.credential}</p>}
         <button type="submit">Log In</button>
+        <button type="demoUser" className="log-in-modal-button cursor" onClick={demoUserLogIn}>Log In as Demo User</button>
       </form>
     </>
   );
