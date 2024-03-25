@@ -12,9 +12,10 @@ const UsersSpots = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const currentUser = useSelector(state => state.session.user)
-    let spots = useSelector(state => state.spotsReducer)
-    spots = Object.values(spots)
-    console.log("line15",spots)
+    const spots = useSelector(state => Object.values(state.spotsReducer))
+
+    console.log(`line17`,spots)
+
 
     useEffect(()=>{
         !currentUser && navigate('/')
