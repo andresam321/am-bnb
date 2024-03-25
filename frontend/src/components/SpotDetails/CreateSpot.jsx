@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect,useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { createNewSpot, getSpotDetails } from "../../store/spots"
+import "./SpotDetails.css"
 
 const CreateSpot = () => {
 const dispatch = useDispatch()

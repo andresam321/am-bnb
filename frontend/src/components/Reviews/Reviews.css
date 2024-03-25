@@ -73,3 +73,8 @@ input[type=radio] {
 .keep-button:hover {
     background-color: #222; /* Darker grey on hover */
 }
+.validation-message {
+    color: red;
+    font-size: 12px;
+    margin-left: 10px; /* Adjust as needed */
+}

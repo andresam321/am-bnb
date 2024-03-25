@@ -99,7 +99,7 @@ return (
                                                 onMouseEnter={() => setHover(rating)}
                                                 onMouseLeave={() => setHover(0)}
                                                 />
-                                                {validations.star && <span className="validation-message">{validations.star}</span>}
+                                                {/* {validations.stars && <span className="validation-message">{validations.stars}</span>} */}
                                         </label>
                                     )
                                 })}
