@@ -106,7 +106,7 @@ return (
                                 Stars
                             </div>
                             <button
-                            // disabled={Object.values(validations).length}
+                            disabled={Object.values(validations).length > 0}
                             className=""
                             type="submit">
                             Submit Your Review
