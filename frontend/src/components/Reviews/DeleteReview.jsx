@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux"
 import OpenModalButton from "../OpenModalButton/OpenModalButton"
-import { deleteReviewThunk,getReviewsThunk } from "../../store/reviews"
+import { deleteReviewByIdThunk,getAllReviewsThunk } from "../../store/reviews"
 import { useModal } from "../../context/Modal"
 import { useEffect } from "react"
 import "./Reviews.css"
@@ -11,13 +11,13 @@ const DeleteReview = ({reviewId, spotId}) => {
     const { closeModal } = useModal()
 
     useEffect(() => {
-        dispatch(getReviewsThunk(spotId))
+        dispatch(getAllReviewsThunk(spotId))
     },[spotId, dispatch])
 
 
     const deleteReview = async (e) => {
         e.preventDefault()
-        await dispatch(deleteReviewThunk(reviewId))
+        await dispatch(deleteReviewByIdThunk(reviewId))
         closeModal()
         window.location.reload()
     }

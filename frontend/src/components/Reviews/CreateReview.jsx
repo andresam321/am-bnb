@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 // import OpenModalButton from "../OpenModalButton/OpenModalButton"
 // import { useModal } from "../../context/Modal"
 import { FaStar } from 'react-icons/fa';
-import { createReviewThunk } from "../../store/reviews"
+import { createReviewByIdThunk } from "../../store/reviews"
 import './Reviews.css'
 
 const CreateReview = () => {
@@ -58,7 +58,7 @@ const CreateReview = () => {
             review,
             stars
         }
-        await dispatch(createReviewThunk(newReview,spotId))
+        await dispatch(createReviewByIdThunk(newReview,spotId))
         // closeModal();
         reset()
     }

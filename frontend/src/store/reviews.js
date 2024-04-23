@@ -21,7 +21,11 @@ const deleteReview = (reviewId) => ({
     reviewId
 })
 
-export const getReviewsThunk = (spotId) => async dispatch => {
+
+// thunks
+
+
+export const getAllReviewsThunk = (spotId) => async dispatch => {
 const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
 
 const reviews = await response.json();
@@ -29,7 +33,7 @@ dispatch(getReviews(reviews));
 return reviews;
 };
 
-export const createReviewThunk = (review, spotId) => async dispatch => {
+export const createReviewByIdThunk = (review, spotId) => async dispatch => {
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -45,7 +49,7 @@ export const createReviewThunk = (review, spotId) => async dispatch => {
     }
 };
 
-export const deleteReviewThunk = (reviewId) => async dispatch => {
+export const deleteReviewByIdThunk = (reviewId) => async dispatch => {
     await csrfFetch(`/api/reviews/${reviewId}`, {
     method: 'DELETE'
     })
@@ -53,7 +57,7 @@ export const deleteReviewThunk = (reviewId) => async dispatch => {
     await dispatch(deleteReview(reviewId));
 }
 
-
+// reducer
 
 function reviewsReducer(state = {}, action) {
     switch(action.type) {
