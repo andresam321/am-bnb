@@ -2,36 +2,52 @@ import { useDispatch,useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { getSpotDetails } from '../../store/spots'
 import { useParams } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import GetSpotReviews from './GetSpotReviews'
 // import DeleteReview from '../Reviews/DeleteReview'
 import "../SpotDetails/SpotDetails.css"
 
 
 const SpotDetailsPage = () => {
+    // const navigate = useNavigate()
     const {spotId} = useParams()
     const dispatch = useDispatch()
     // const [reviewPosted, setReviewPosted] = useState(false);
-    const spot = useSelector(state => state.spotsReducer)
-    console.log("line13", spot)
+    let spot = useSelector(state => state.spotsReducer)
+    // console.log("line15 is working", spot)
     const selectedSpot = spot[spotId]
-    console.log("line14 ", selectedSpot)
+    console.log("line17 is probably working", selectedSpot)
     useEffect(()=>{
         dispatch(getSpotDetails(spotId))
+        
     },[dispatch,spotId])
 
     const handleReserveClick = () => {
         alert("Feature coming soon!")
     };
 
+    
     const reviews = () => {
-        if (selectedSpot.numReviews > 1 && selectedSpot.avgStarRating) {
-            return (`${selectedSpot.avgStarRating.toFixed(1)} · ${selectedSpot.numReviews} reviews`);
+        if (!selectedSpot) return null;
+
+        const { numReviews, avgStarRating } = selectedSpot;
+
+        if (numReviews > 1 && avgStarRating) {
+            return `${avgStarRating.toFixed(1)} · ${numReviews} reviews`;
+        } else if (numReviews === 1 && avgStarRating) {
+            return `${avgStarRating.toFixed(1)} · ${numReviews} review`;
+        } else {
+            return 'New';
         }
-        if (selectedSpot.numReviews === 1 && selectedSpot.avgStarRating) {
-            return (`${selectedSpot.avgStarRating.toFixed(1)} · ${selectedSpot.numReviews} review`);
-        }
-        return 'New';
-    }
+    };
+
+    
+    // useEffect(()=> {
+
+    //     if (!selectedSpot) {
+    //         // navigate("/")
+    //     }
+    // }, [selectedSpot])
 
 
 return (

@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 // import OpenModalButton from "../OpenModalButton/OpenModalButton"
 // import { useModal } from "../../context/Modal"
 import { FaStar } from 'react-icons/fa';
-import { createReviewBySpotId } from "../../store/reviews"
+import { createReviewByIdThunk } from "../../store/reviews"
 import './Reviews.css'
 
 const CreateReview = () => {
@@ -58,7 +58,7 @@ const CreateReview = () => {
             review,
             stars
         }
-        await dispatch(createReviewBySpotId(newReview,spotId))
+        await dispatch(createReviewByIdThunk(newReview,spotId))
         // closeModal();
         reset()
     }
@@ -70,7 +70,7 @@ return (
         {sessionUser && (sessionUser !== spotOwner) && !reviewed && (
             // <OpenModalButton
             //     className = "post-review-button"
-            //     buttonText ={"Post your Review"}
+            //     buttonText ="Post your Review"
             //     modalComponent={
                     <form onSubmit={submitHandler}>
                         <h2>How was your stay?</h2>
@@ -84,6 +84,7 @@ return (
                             {validations.review && <span className="validation-message">{validations.review}</span>}
                             <div className="">
                                 {starRatings.map((star,index)=>{
+                                    // console.log("line 87",star)
                                     const rating = index + 1
                                     return (
                                     <label key = {rating}>
@@ -92,6 +93,7 @@ return (
                                             name="rating"
                                             value={rating}
                                             onClick={()=>setStars(rating)}
+                                            onChange={() => setStars(rating)}
                                             />
                                             <FaStar
                                                 className="stars"
@@ -103,7 +105,7 @@ return (
                                         </label>
                                     )
                                 })}
-                                Stars
+                                <span>{stars} Stars</span>
                             </div>
                             <button
                             disabled={Object.values(validations).length > 0}
@@ -113,8 +115,8 @@ return (
                             </button>
                             
                     </form>
-               // }
-           // />
+                // }
+            // />
         )}
     </>
     )

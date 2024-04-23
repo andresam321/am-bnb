@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
-import { getReviewsBySpotId } from "../../store/reviews"
+import { getAllReviewsThunk } from "../../store/reviews"
 import CreateReview from "../Reviews/CreateReview"
 import DeleteReview from '../Reviews/DeleteReview'
 import "./GetSpotReviews.css"
@@ -30,7 +30,7 @@ const sessionUser = useSelector(state => state.session.user?.id)
 const spot = useSelector(state => state.spotsReducer?.[spotId].ownerId)
 
 useEffect(()=>{
-    dispatch(getReviewsBySpotId(spotId))
+    dispatch(getAllReviewsThunk(spotId))
 },[dispatch,spotId])
 
 
