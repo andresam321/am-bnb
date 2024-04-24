@@ -40,7 +40,7 @@ useEffect(()=>{
 
 useEffect(() => {
     if (sessionUser && reviews.some(review => review.userId === sessionUser)) {
-        setShowButton(false); // Hide button if user has already posted a review
+        setShowButton(false); 
     }
 }, [reviews, sessionUser]);
 
@@ -66,13 +66,12 @@ return (
 <div>
     
     <div>
-      {/* Button to open the modal */}
-    {showButton && sessionUser && sessionUser !== spot?.Owner?.id && (
+    {showButton && sessionUser && sessionUser !== spot && (
         <OpenModalButton
         buttonText="Post Your Review"
         modalComponent={<CreateReview />}
         />
-    )}
+    )} 
     </div>
 
         {!reviews.length && sessionUser && sessionUser !== spot?.Owner?.id &&
