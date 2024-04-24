@@ -33,6 +33,12 @@ const sessionUser = useSelector(state => state.session.user?.id)
 
 const spot = useSelector(state => state.spotsReducer?.[spotId].ownerId)
 
+useEffect(() => {
+    if (spot && reviews.length > 0) {
+      setShowButton(true); // Show button once spot and reviews are loaded
+    }
+}, [spot, reviews]);
+
 useEffect(()=>{
     dispatch(getAllReviewsThunk(spotId))
     setShowButton(true)
@@ -44,6 +50,7 @@ useEffect(() => {
     }
 }, [reviews, sessionUser]);
 
+const userHasReviewed = reviews.some(review => review.userId === sessionUser);
 
 const months = [
     'January',
@@ -66,7 +73,7 @@ return (
 <div>
     
     <div>
-    {showButton && sessionUser && sessionUser !== spot && (
+    {showButton && sessionUser && sessionUser !== spot && !userHasReviewed && (
         <OpenModalButton
         buttonText="Post Your Review"
         modalComponent={<CreateReview />}

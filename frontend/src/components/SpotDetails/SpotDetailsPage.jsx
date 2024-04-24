@@ -10,6 +10,8 @@ import "../SpotDetails/SpotDetails.css"
 
 
 const SpotDetailsPage = () => {
+
+    
     // const navigate = useNavigate()
     const {spotId} = useParams()
     const dispatch = useDispatch()
@@ -18,10 +20,15 @@ const SpotDetailsPage = () => {
     // console.log("line15 is working", spot)
     const selectedSpot = spot[spotId]
     console.log("line17 is probably working", selectedSpot)
-    useEffect(()=>{
+
+
+    useEffect(() => {
         dispatch(getSpotDetails(spotId))
-        
     },[dispatch,spotId])
+
+    // useEffect(() => {
+
+    // },[numReviews,avgStarRating])
 
     const handleReserveClick = () => {
         alert("Feature coming soon!")
@@ -54,7 +61,7 @@ const SpotDetailsPage = () => {
     //     if (!selectedSpot) {
     //         // navigate("/")
     //     }
-    // }, [selectedSpot])
+    // }, [reviews])
 
 
 return (

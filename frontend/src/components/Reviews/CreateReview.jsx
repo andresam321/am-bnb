@@ -5,6 +5,7 @@ import { useModal } from "../../context/Modal"
 import { createReviewByIdThunk } from "../../store/reviews"
 import StarInput from "./StarInput"
 import './Reviews.css'
+import { getSpotDetails } from "../../store/spots"
 
 const CreateReview = () => {
     const dispatch = useDispatch()
@@ -27,6 +28,8 @@ const CreateReview = () => {
     // const [hover,setHover] = useState(0)
     const [stars,setStars] = useState(0)
     const [validations,setValidations] = useState({})
+    const [averageRating, setAverageRating] = useState(0);
+
 
     // const starRatings = [1,2,3,4,5]
 
@@ -48,6 +51,13 @@ const CreateReview = () => {
         setStars(null)
         setValidations({})
     }
+    useEffect(() => {
+        if (reviews.length > 0) {
+            const totalStars = reviews.reduce((acc, curr) => acc + curr.stars, 0);
+            const avg = totalStars / reviews.length;
+            setAverageRating(avg);
+        }
+    }, [reviews]);
 
     const submitHandler = async(e)=>{
         e.preventDefault()
@@ -57,6 +67,7 @@ const CreateReview = () => {
             stars
         }
         await dispatch(createReviewByIdThunk(newReview,spotId))
+        await dispatch(getSpotDetails(spotId))
         closeModal();
         reset()
     }
@@ -66,9 +77,6 @@ const CreateReview = () => {
 return (
     <>
         {sessionUser && (sessionUser !== spotOwner) && !reviewed && (
-            // <OpenModalButton
-            //     buttonText ="Post your Review"
-            //     modalComponent={
                     <form onSubmit={submitHandler}>
                         <h2>How was your stay?</h2>
                             <textarea 
@@ -87,10 +95,15 @@ return (
                             type="submit">
                             Submit Your Review
                             </button>
-                            
+                            <div>
+                        {averageRating > 0 && (
+                            <div>
+                                Average Rating: {averageRating.toFixed(1)}
+                            </div>
+                            )}
+                    </div>
+
                     </form>
-            //     }
-            // />
         )}
     </>
     )
