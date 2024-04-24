@@ -1,9 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import OpenModalButton from "../OpenModalButton/OpenModalButton"
 import { useModal } from "../../context/Modal"
-import { FaStar } from 'react-icons/fa';
 import { createReviewByIdThunk } from "../../store/reviews"
 import StarInput from "./StarInput"
 import './Reviews.css'
@@ -26,11 +24,11 @@ const CreateReview = () => {
     const { closeModal } = useModal()
 
     const [review,setReview] = useState('')
-    const [hover,setHover] = useState(0)
+    // const [hover,setHover] = useState(0)
     const [stars,setStars] = useState(0)
     const [validations,setValidations] = useState({})
 
-    const starRatings = [1,2,3,4,5]
+    // const starRatings = [1,2,3,4,5]
 
 
 
@@ -47,7 +45,6 @@ const CreateReview = () => {
 
     const reset = () =>{
         setReview('')
-        setHover(null)
         setStars(null)
         setValidations({})
     }
