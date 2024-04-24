@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-// import OpenModalButton from "../OpenModalButton/OpenModalButton"
-// import { useModal } from "../../context/Modal"
+import OpenModalButton from "../OpenModalButton/OpenModalButton"
+import { useModal } from "../../context/Modal"
 import { FaStar } from 'react-icons/fa';
 import { createReviewByIdThunk } from "../../store/reviews"
+import StarInput from "./StarInput"
 import './Reviews.css'
 
 const CreateReview = () => {
@@ -22,7 +23,7 @@ const CreateReview = () => {
     // console.log("line14 line <=", reviews)
 
 
-    // const { closeModal } = useModal()
+    const { closeModal } = useModal()
 
     const [review,setReview] = useState('')
     const [hover,setHover] = useState(0)
@@ -59,7 +60,7 @@ const CreateReview = () => {
             stars
         }
         await dispatch(createReviewByIdThunk(newReview,spotId))
-        // closeModal();
+        closeModal();
         reset()
     }
     const reviewed = reviews?.find(review => review.userId === sessionUser)
@@ -69,7 +70,6 @@ return (
     <>
         {sessionUser && (sessionUser !== spotOwner) && !reviewed && (
             // <OpenModalButton
-            //     className = "post-review-button"
             //     buttonText ="Post your Review"
             //     modalComponent={
                     <form onSubmit={submitHandler}>
@@ -79,34 +79,11 @@ return (
                             placeholder="Leave your review here..."
                             minLength={10}
                             value={review}
-                            onChange={e =>setReview(e.target.value)}
+                            onChange={(e) =>setReview(e.target.value)}
                             />
                             {validations.review && <span className="validation-message">{validations.review}</span>}
-                            <div className="">
-                                {starRatings.map((star,index)=>{
-                                    // console.log("line 87",star)
-                                    const rating = index + 1
-                                    return (
-                                    <label key = {rating}>
-                                        <input
-                                            type="radio"
-                                            name="rating"
-                                            value={rating}
-                                            onClick={()=>setStars(rating)}
-                                            onChange={() => setStars(rating)}
-                                            />
-                                            <FaStar
-                                                className="stars"
-                                                style={{color: (hover || stars) >= rating ? 'gold' : 'grey'}}
-                                                onMouseEnter={() => setHover(rating)}
-                                                onMouseLeave={() => setHover(0)}
-                                                />
-                                                {/* {validations.stars && <span className="validation-message">{validations.stars}</span>} */}
-                                        </label>
-                                    )
-                                })}
-                                <span>{stars} Stars</span>
-                            </div>
+                            <StarInput stars={stars} setStars={setStars}
+                            />
                             <button
                             disabled={Object.values(validations).length > 0}
                             className=""
@@ -115,7 +92,7 @@ return (
                             </button>
                             
                     </form>
-                // }
+            //     }
             // />
         )}
     </>

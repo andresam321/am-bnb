@@ -4,6 +4,7 @@ import { getSpotDetails } from '../../store/spots'
 import { useParams } from 'react-router-dom'
 // import { useNavigate } from 'react-router-dom'
 import GetSpotReviews from './GetSpotReviews'
+// import { updateCurrentSpot } from '../../store/spots'
 // import DeleteReview from '../Reviews/DeleteReview'
 import "../SpotDetails/SpotDetails.css"
 
@@ -25,6 +26,12 @@ const SpotDetailsPage = () => {
     const handleReserveClick = () => {
         alert("Feature coming soon!")
     };
+    // const handleCreateReview = () => {
+    //     // Your logic to create a review
+    //     // After creating a review, update the spot details in the store
+    //     dispatch(updateCurrentSpot(spotId)); // Assuming you have an action to update spot details
+    // };
+    
 
     
     const reviews = () => {

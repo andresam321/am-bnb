@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { NavLink } from 'react-router-dom'
 import { getAllSpots } from "../../store/spots";
 import "../LandingPage/LandingPage.css"
+import Maps from "../maps/maps";
 
 const LandingPage = () => {
 
@@ -28,6 +29,7 @@ useEffect(()=> {
     return (
 <header>
     <div className="spot-container">
+        <Maps/>
     {spots &&
         spots.map((spot) => (
         <div className="spot-tile" key={spot.id}>

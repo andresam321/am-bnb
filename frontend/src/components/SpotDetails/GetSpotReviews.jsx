@@ -1,9 +1,11 @@
-import { useEffect } from "react"
+import { useEffect,useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { getAllReviewsThunk } from "../../store/reviews"
 import CreateReview from "../Reviews/CreateReview"
 import DeleteReview from '../Reviews/DeleteReview'
+import OpenModalButton from '../OpenModalButton';
+
 import "./GetSpotReviews.css"
 
 
@@ -12,6 +14,8 @@ import "./GetSpotReviews.css"
 const GetSpotReviews = () => {
 const dispatch = useDispatch();
 const {spotId} = useParams()
+const [showButton, setShowButton] = useState(true);
+
 let stateReviews = useSelector(state => state.reviewsReducer)
 
 
@@ -31,8 +35,14 @@ const spot = useSelector(state => state.spotsReducer?.[spotId].ownerId)
 
 useEffect(()=>{
     dispatch(getAllReviewsThunk(spotId))
+    setShowButton(true)
 },[dispatch,spotId])
 
+useEffect(() => {
+    if (sessionUser && reviews.some(review => review.userId === sessionUser)) {
+        setShowButton(false); // Hide button if user has already posted a review
+    }
+}, [reviews, sessionUser]);
 
 
 const months = [
@@ -54,7 +64,17 @@ const months = [
 return (
 
 <div>
-    <CreateReview />
+    
+    <div>
+      {/* Button to open the modal */}
+    {showButton && sessionUser && sessionUser !== spot?.Owner?.id && (
+        <OpenModalButton
+        buttonText="Post Your Review"
+        modalComponent={<CreateReview />}
+        />
+    )}
+    </div>
+
         {!reviews.length && sessionUser && sessionUser !== spot?.Owner?.id &&
                 <p>Be the first to post a review</p>
             }
