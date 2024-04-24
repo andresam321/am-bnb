@@ -2,22 +2,16 @@ import { useDispatch,useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { getSpotDetails } from '../../store/spots'
 import { useParams } from 'react-router-dom'
-// import { useNavigate } from 'react-router-dom'
 import GetSpotReviews from './GetSpotReviews'
-// import { updateCurrentSpot } from '../../store/spots'
-// import DeleteReview from '../Reviews/DeleteReview'
 import "../SpotDetails/SpotDetails.css"
 
 
 const SpotDetailsPage = () => {
 
     
-    // const navigate = useNavigate()
     const {spotId} = useParams()
     const dispatch = useDispatch()
-    // const [reviewPosted, setReviewPosted] = useState(false);
     let spot = useSelector(state => state.spotsReducer)
-    // console.log("line15 is working", spot)
     const selectedSpot = spot[spotId]
     console.log("line17 is probably working", selectedSpot)
 
@@ -26,19 +20,9 @@ const SpotDetailsPage = () => {
         dispatch(getSpotDetails(spotId))
     },[dispatch,spotId])
 
-    // useEffect(() => {
-
-    // },[numReviews,avgStarRating])
-
     const handleReserveClick = () => {
         alert("Feature coming soon!")
     };
-    // const handleCreateReview = () => {
-    //     // Your logic to create a review
-    //     // After creating a review, update the spot details in the store
-    //     dispatch(updateCurrentSpot(spotId)); // Assuming you have an action to update spot details
-    // };
-    
 
     
     const reviews = () => {
@@ -54,15 +38,6 @@ const SpotDetailsPage = () => {
             return 'New';
         }
     };
-
-    
-    // useEffect(()=> {
-
-    //     if (!selectedSpot) {
-    //         // navigate("/")
-    //     }
-    // }, [reviews])
-
 
 return (
 <div>

@@ -35,7 +35,7 @@ const spot = useSelector(state => state.spotsReducer?.[spotId].ownerId)
 
 useEffect(() => {
     if (spot && reviews.length > 0) {
-      setShowButton(true); // Show button once spot and reviews are loaded
+    setShowButton(true); 
     }
 }, [spot, reviews]);
 
