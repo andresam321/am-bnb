@@ -1,0 +1,63 @@
+Table Users {
+  id int [pk, increment]
+  firstName varchar [not null]
+  lastName varchar [not null]
+  username varchar [not null, unique]
+  hashedPassword varchar [not null]
+  email varchar [not null, unique]
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table Spots {
+  id int [pk, increment]
+  ownerId int [ref: > Users.id]
+  address varchar
+  city varchar
+  state varchar
+  country varchar
+  lat decimal
+  lng decimal
+  name varchar [not null]
+  description varchar [not null]
+  price decimal
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table Reviews {
+  id int [pk, increment]
+  spotId int [ref: > Spots.id]
+  userId int [ref: > Users.id]
+  review varchar [not null]
+  stars int [not null]
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table Bookings {
+  id int [pk, increment]
+  spotId int [ref: > Spots.id]
+  userId int [ref: > Users.id]
+  startDate date [not null]
+  endDate date [not null]
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table SpotImages {
+  id int [pk, increment]
+  spotId int [ref: > Spots.id]
+  url varchar
+  preview boolean [not null, default: false]
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table ReviewImages {
+  id int [pk, increment]
+  reviewId int [ref: > Reviews.id]
+  url varchar
+  createdAt timestamp
+  updatedAt timestamp
+}

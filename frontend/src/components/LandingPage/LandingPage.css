@@ -1,0 +1,45 @@
+.spot-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; 
+    padding: 20px; 
+}
+  .spot-tile {
+    width: calc(30% - 20px); 
+    margin-bottom: 30px; 
+    padding: 20px; 
+    border-radius: 12px; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); 
+    transition: box-shadow 0.3s ease; 
+  }
+  
+  .spot-tile:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4); 
+  }
+  
+  .tile-image {
+    width: 100%;
+    height: auto; 
+    border-radius: 8px; 
+  }
+  
+  .info-container {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  
+  .location {
+    font-size: 16px;
+    margin-bottom: 8px; 
+  }
+  
+  .price {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .rating {
+    margin-top: 8px; /* Adjust margin as needed */
+    font-size: 16px;
+  }
