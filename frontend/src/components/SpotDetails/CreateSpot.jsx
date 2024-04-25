@@ -96,7 +96,7 @@ const handleSubmit = async (e) =>{
     }
     const newSpot = await dispatch(createNewSpot(spot, newImages))
 
-    dispatch(getSpotDetails(newSpot))
+    await dispatch(getSpotDetails(newSpot))
     navigate(`/spots/${newSpot.id}`)
 }
 
