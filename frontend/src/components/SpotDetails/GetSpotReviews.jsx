@@ -33,6 +33,8 @@ const sessionUser = useSelector(state => state.session.user?.id)
 
 const spot = useSelector(state => state.spotsReducer?.[spotId].ownerId)
 
+console.log(spot)
+
 useEffect(() => {
     if (spot && reviews.length > 0) {
     setShowButton(true); 
