@@ -183,7 +183,7 @@ fast wif or parking, and what you love about the neighborhood.</p>
                     {validations.description && <span className="validation-message">{validations.description}</span>}
                     </div>
                     <div className="">
-                        <h3>Create a tile for your spot</h3>
+                        <h3>Create a title for your spot</h3>
                         <p>Catch guests&apos; attention with a spot title that highlights what makes
 your place special.</p>
                         <input

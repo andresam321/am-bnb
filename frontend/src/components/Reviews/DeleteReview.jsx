@@ -3,6 +3,7 @@ import OpenModalButton from "../OpenModalButton/OpenModalButton"
 import { deleteReviewByIdThunk,getAllReviewsThunk } from "../../store/reviews"
 import { useModal } from "../../context/Modal"
 import { useEffect } from "react"
+import { getSpotDetails } from "../../store/spots"
 import "./Reviews.css"
 
 
@@ -19,7 +20,7 @@ const DeleteReview = ({reviewId, spotId}) => {
         e.preventDefault()
         await dispatch(deleteReviewByIdThunk(reviewId))
         closeModal()
-        window.location.reload()
+        await dispatch(getSpotDetails(spotId))
     }
 
 
