@@ -17,8 +17,18 @@ const SpotDetailsPage = () => {
 
 
     useEffect(() => {
-        dispatch(getSpotDetails(spotId))
-    },[dispatch,spotId])
+        const fetchData = async () => {
+            try {
+                await dispatch(getSpotDetails(spotId));
+            } catch (error) {
+                console.log(error)
+            }
+        };
+    
+        fetchData();
+    
+    }, [dispatch, spotId]);
+    
 
     const handleReserveClick = () => {
         alert("Feature coming soon!")
@@ -68,13 +78,14 @@ return (
         <div className="spot-container">
             <div className="spot-info">
             <p><span className="">{`$${selectedSpot.price}`}</span><span className="price-night">night</span></p>
-            <p><i className=""></i><span className="rating-review"> {reviews()}</span></p>
+            <p><i className="fas fa-star"></i><span className="rating-review"> {reviews()}</span></p>
             <button className="reserve-button" onClick={handleReserveClick}>Reserve</button>
         </div>
         </div>
     </section>
+
     <div>
-        <h1><i className=""></i><span className=""> {reviews()}</span></h1>
+        <h1><i className="fas fa-star"></i><span className=""> {reviews()}</span></h1>
         <GetSpotReviews/>
     </div>
     </div>
