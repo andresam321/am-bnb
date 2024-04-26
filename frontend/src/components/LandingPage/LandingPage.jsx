@@ -31,8 +31,9 @@ useEffect(()=> {
             <div className="spot-container">
                 {spots && spots.map((spot) => (
                     <NavLink to={`/spots/${spot.id}`} key={spot.id} className="spot-tile">
-                        <div className="">
+                        <div className="spot-image-home">
                             <img className="tile-image" src={spot.previewImage || "https://res.cloudinary.com/djuzk5um3/image/upload/v1710993252/am-bnb%20authme_Project/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available_ykibfw.webp"} alt={`${spot.name} preview image`} />
+                            <span className="title-tooltip">{spot.name}</span>
                             <div className="info-container">
                                 <div className="location">{`${spot.city}, ${spot.state}`}</div>
                                 <div className="price">{`$${spot.price}/night`}</div>
