@@ -72,8 +72,8 @@ useEffect(() =>{
 
 }, [address,city,state,country,name,description,price,previewImage,currentUser,navigate])
 
-const handleSubmit = async (e) =>{
-    e.preventDefault()
+const handleSubmit = async (e) => {
+    e.preventDefault();
 
     const spot = {
         ownerId: currentUser.id,
@@ -86,19 +86,30 @@ const handleSubmit = async (e) =>{
         price,
         lat,
         lng,
-    }
+    };
+
     const newImages = {
         previewImage,
         imageTwo,
         imageThree,
         imageFour,
         imageFive
+    };
+
+    try {
+        
+        const newSpot = await dispatch(createNewSpot(spot, newImages));
+        
+
+        await dispatch(getSpotDetails(newSpot.id));
+        
+        navigate(`/spots/${newSpot.id}`);
+    } catch (error) {
+        console.error("Error creating new spot:", error);
     }
-    const newSpot = await dispatch(createNewSpot(spot, newImages))
-    navigate(`/spots/${newSpot.id}`)
-    await dispatch(getSpotDetails(newSpot))
-    
-}
+};
+
+
 
     return (
     <div>

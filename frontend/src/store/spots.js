@@ -119,7 +119,7 @@ export const getSpotDetails = (spotId) => async dispatch =>{
     const data = await response.json()
     console.log(data)
 
-    dispatch(getSpot(data))
+    await dispatch(getSpot(data))
     return response
 }
     
