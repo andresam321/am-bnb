@@ -14,7 +14,7 @@ const UsersSpots = () => {
     const currentUser = useSelector(state => state.session.user)
     const spots = useSelector(state => Object.values(state.spotsReducer))
 
-    console.log(`line17`,spots)
+    // console.log(`line17`,spots)
 
 
     useEffect(()=>{
