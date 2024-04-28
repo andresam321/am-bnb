@@ -50,7 +50,10 @@ const CreateReview = () => {
     }
     useEffect(() => {
         if (reviews.length > 0) {
-            const totalStars = reviews.reduce((acc, curr) => acc + curr.stars, 0);
+            let totalStars = 0;
+            reviews.forEach(review => {
+                totalStars += review.stars;
+            });
             const avg = totalStars / reviews.length;
             setAverageRating(avg);
         }
