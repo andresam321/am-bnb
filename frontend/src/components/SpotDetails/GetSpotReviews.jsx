@@ -49,6 +49,8 @@ useEffect(()=>{
 useEffect(() => {
     if (sessionUser && reviews.some(review => review.userId === sessionUser)) {
         setShowButton(false); 
+    } else {
+        setShowButton(true)
     }
 }, [reviews, sessionUser]);
 
@@ -77,7 +79,7 @@ return (
     <div>
     {showButton && sessionUser && sessionUser !== spot && !userHasReviewed && (
         <OpenModalButton
-        buttonText="Post Your Review"
+        buttonText={"Post Your Review"}
         modalComponent={<CreateReview />}
         />
     )} 
