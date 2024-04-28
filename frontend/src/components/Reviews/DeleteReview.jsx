@@ -17,11 +17,15 @@ const DeleteReview = ({reviewId, spotId}) => {
 
 
     const deleteReview = async (e) => {
-        e.preventDefault()
-        await dispatch(deleteReviewByIdThunk(reviewId))
-        closeModal()
-        await dispatch(getSpotDetails(spotId))
-    }
+        e.preventDefault();
+        try {
+            await dispatch(deleteReviewByIdThunk(reviewId));
+            closeModal();
+            await dispatch(getSpotDetails(spotId));
+        } catch (error) {
+            console.error("Error deleting review:", error);
+        }
+    };
 
 
 return (
