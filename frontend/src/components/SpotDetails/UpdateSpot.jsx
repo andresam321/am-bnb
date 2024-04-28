@@ -10,9 +10,9 @@ const UpdateSpot = () => {
 const dispatch = useDispatch()
 const navigate = useNavigate()
 const { spotId } = useParams()
-console.log("line13",spotId)
+// console.log("line13",spotId)
 const spot = useSelector(state => state.spotsReducer[spotId])
-console.log("line14444444", spot)
+// console.log("line14444444", spot)
 const currentUser = useSelector(state => state.session.user)
 
 const [country, setCountry] = useState(spot?.country);

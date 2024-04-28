@@ -1,7 +1,7 @@
 import {useState} from "react";
 
 const StarInput = ({stars, setStars}) => {
-    const [setStarEffect] = useState(stars);
+    const [starEffect, setStarEffect] = useState(stars);
     const starRating = [1, 2, 3, 4, 5];
     return(
         <div className="stars-rating">
@@ -11,7 +11,7 @@ const StarInput = ({stars, setStars}) => {
             return (
             <i
                 key={`stars-rating-${rating}`}
-                className={`fa-${stars >= rating ? "solid" : "regular"} fa-star`}
+                className={`fa-${starEffect >= rating ? "solid" : "regular"} fa-star`}
                 onClick={() => setStars(rating)}
                 onMouseEnter={() => setStarEffect(rating)}
                 onMouseLeave={() => setStarEffect(stars)}

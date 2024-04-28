@@ -12,12 +12,12 @@ const CreateReview = () => {
     const {spotId} = useParams()
     let reviews = useSelector(state => state.reviewsReducer)
     reviews = Object.values(reviews)
-    console.log("line13 checking for reviews", reviews)
+    // console.log("line13 checking for reviews", reviews)
     const sessionUser = useSelector(state => state.session.user?.id);
     // console.log("line14 this is the session user",sessionUser)
 
     const spotOwner = useSelector(state => state.spotsReducer?.[spotId].ownerId)
-    console.log("line15 spotOwner",spotOwner)
+    // console.log("line15 spotOwner",spotOwner)
     
     // console.log("line14 line <=", reviews)
 
@@ -29,9 +29,6 @@ const CreateReview = () => {
     const [stars,setStars] = useState(0)
     const [validations,setValidations] = useState({})
     const [averageRating, setAverageRating] = useState(0);
-
-
-    // const starRatings = [1,2,3,4,5]
 
 
 
@@ -72,7 +69,7 @@ const CreateReview = () => {
         reset()
     }
     const reviewed = reviews?.find(review => review.userId === sessionUser)
-    console.log("line 61", reviewed)
+    // console.log("line 61", reviewed)
 
 return (
     <>

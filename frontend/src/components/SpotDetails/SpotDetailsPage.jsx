@@ -13,7 +13,7 @@ const SpotDetailsPage = () => {
     const dispatch = useDispatch()
     let spot = useSelector(state => state.spotsReducer)
     const selectedSpot = spot[spotId]
-    console.log("line17 is probably working", selectedSpot)
+    // console.log("line17 is probably working", selectedSpot)
 
 
     useEffect(() => {

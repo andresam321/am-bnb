@@ -12,11 +12,11 @@ const dispatch = useDispatch()
 // console.log("line11",getAllSpots)
 // console.log(Array.isArray("line12",getAllSpots))
 let spots = useSelector(state => state.spotsReducer);
-console.log("line14 stateeeeeeeeee", spots)
+// console.log("line14 stateeeeeeeeee", spots)
 
 spots = Object.values(spots)
 
-console.log("line18 turned into array",spots)
+// console.log("line18 turned into array",spots)
 
 // console.log(Array.isArray(spots))
 

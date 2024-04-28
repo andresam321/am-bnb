@@ -27,7 +27,7 @@ stateReviews = Object.values(stateReviews)
 
 
 const reviews = [...stateReviews].reverse()
-console.log("line 18",reviews)
+// console.log("line 18",reviews)
 
 const sessionUser = useSelector(state => state.session.user?.id)
 
